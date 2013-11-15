@@ -19,4 +19,5 @@ pointlog.txt
 /datc/maps/
 !.htaccess
 variants/*/cache/
-
+css/variants-*.css
+locales/*/lookup.php.txt
