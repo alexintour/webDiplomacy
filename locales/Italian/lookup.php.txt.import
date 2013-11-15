@@ -1149,7 +1149,10 @@ Di chi ti fiderai?\"<br />
 'Blog' => 'Blog',
 'webDiplomacy blog where to get the latest news and updates.' => 'Il blog di webDiplomacyper essere sempre aggiornati sulle ultime notizie.',
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 582f4a6bbe45edf11995efa3e51fa2d7e2d719df
 'noMoves' => 'noMoves',
  'Toggle movement lines' => 'Nascondi o mostra gli ordini sulla mappa',
  'Reset the minimum bet' => 'Azzera la posta minima',
@@ -1167,6 +1170,9 @@ Di chi ti fiderai?\"<br />
  'The same as the standard map, except initially Rome has a fleet instead of an army.' => 'Variante uguale a quella classica, ma con una flotta a Roma invece dell\'armata',
  'The same as the standard map, except you can build on all supply centers you own.' => 'Variante uguale a quella classica, ma ï¿½ possibile costruire in tutti i centri posseduti.',
  'The Rinascimento variant allows 12 players to struggle for the supremacy in Italy, during the Renaissance.' => 'Lotta tra 12 giocatori per il dominio nell\'Italia rinascimentale.',
+<<<<<<< HEAD
+>>>>>>> 582f4a6bbe45edf11995efa3e51fa2d7e2d719df
+=======
 >>>>>>> 582f4a6bbe45edf11995efa3e51fa2d7e2d719df
 'A small blog with latest news and announcements.' => 'Il blog di webDiplomacy per essere sempre aggiornati sulle ultime notizie.',
 'Il forum di webDiplomacy' => 'Il forum di webDiplomacy',
@@ -1185,6 +1191,7 @@ Di chi ti fiderai?\"<br />
 'Created by' => 'Creato da',
 'Adapted for webDiplomacy by' => 'Adattato per Webdiplomacy da',
 <<<<<<< HEAD
+<<<<<<< HEAD
 'The Sengoku Variant is a historical transplant to medieval Japan.' => 'La variante Sengoku è ambientata ai tempi del Giappone medievale',
 'Code' => 'Codice',
 'Special rules/information' => 'Regole speciali - informazioni aggiuntive',
@@ -1194,6 +1201,8 @@ Di chi ti fiderai?\"<br />
 'The same as the standard map, except you can build on all supply centers you own.' => 'Variante uguale a quella classica, ma è possibile costruire in tutti i centri posseduti.',
 'The Rinascimento variant allows 12 players to struggle for the supremacy in Italy, during the Renaissance.' => 'Lotta tra 12 giocatori per il dominio nell\'Italia rinascimentale.',
 =======
+=======
+>>>>>>> 582f4a6bbe45edf11995efa3e51fa2d7e2d719df
 'The Sengoku Variant is a historical transplant to medieval Japan.' => 'La variante Sengoku ï¿½ ambientata ai tempi del Giappone medievale',
 'Code' => 'Codice',
 'Special rules/information' => 'Regole speciali - informazioni aggiuntive',
@@ -1271,4 +1280,7 @@ Di chi ti fiderai?\"<br />
 'Alexandria' => 'Alexandria',
 'Ligurian Sea' => 'Mare Liguricum',
 'Libyan Sea' => 'Mare Libycum',
+<<<<<<< HEAD
+>>>>>>> 582f4a6bbe45edf11995efa3e51fa2d7e2d719df
+=======
 >>>>>>> 582f4a6bbe45edf11995efa3e51fa2d7e2d719df
