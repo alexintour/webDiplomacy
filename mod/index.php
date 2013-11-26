@@ -14,7 +14,7 @@
     <?php /* tolto per la metà di sinistra, ma nella metà di destra serve <div style="clear:both"> </div>  */ ?><div class="hr"></div>
 	      <div class="homeForumGroup homeForumAlt2">
 	         <div class="homeForumSubject homeForumTopBorder">
-	           <a href="http://wiki.webdiplomacy.it">DiploWiki</a>
+	           <a href="http://wiki.webdiplomacy.it/index.php?title=Pagina_principale">DiploWiki</a>
 	         </div>        
 	         <div class="homeForumPostAlt1 homeForumPost">
 	             <div class="homeForumMessage">
@@ -67,7 +67,7 @@ printImage();
       <p>Secondo il nostro parere naturalmente… sapete perchè?
       <br />Perchè è un gioco in cui la fortuna non esiste: per vincere, devi giocare e vendere "Te stesso", la tua capacità di convincere, di comunicare, un gioco in cui il tradimento è lecito ma tradire "costa" in quanto perdi credibilità di fronte a tutti gli altri giocatori ma soprattutto "costa dentro" perchè senti di aver tradito la fiducia di qualcuno. 
 	<br />Tuttavia tradire può darti grandi vantaggi, spesso può essere determinante per la vittoria. <strong>Diplomacy</strong> riassume un po' la nostra vita in cui dobbiamo raggiungere degli obiettivi ma spesso i nostri obiettivi si scontrano con quelli degli altri. Allora devi mediare con tutti, anche con la tua coscienza.
-<br />Per chi non conosce questo gioco da tavolo, Diplomacy è ambientato in Europa nei primi anni del '900. Ci sono 7 grandi nazioni a contendersi il dominio del continente: <b>Impero Austro-Ungarico</b>, <b>Germania</b>, <b>Francia</b>, <b>Inghilterra</b>, <b>Russia</b>, <b>Italia</b> e <b>Turchia</b>. Ad ogni giocatore viene assegnata una potenza (con il relativo esercito e marina) e avrà come obiettivo quello di far diventare la sua nazione la più forte d'Europa. Ma per farlo avrà bisogno di allearsi con altre potenze perchè a questo gioco da soli si fa poca strada. <br />Se ti interessa provare a <b>giocare a Diplomacy</b> online, leggi le istruzioni che troverai su questo sito, iscriviti ad una partita e attendi l’inizio del gioco.
+<br />Per chi non conosce questo gioco da tavolo, Diplomacy è ambientato in Europa nei primi anni del '900. Ci sono 7 grandi nazioni a contendersi il dominio del continente: <b>Impero Austro-Ungarico</b>, <b>Germania</b>, <b>Francia</b>, <b>Inghilterra</b>, <b>Russia</b>, <b>Italia</b> e <b>Turchia</b>. Ad ogni giocatore viene assegnata una potenza (con il relativo esercito e marina) e avrà come obiettivo quello di far diventare la sua nazione la più forte d'Europa. Ma per farlo avrà bisogno di allearsi con altre potenze perchè a questo gioco da soli si fa poca strada. <br />Se ti interessa provare a <strong>giocare a Diplomacy</strong> online, leggi le istruzioni che troverai su questo sito, iscriviti ad una partita e attendi l’inizio del gioco.
 <br />Saprai convincere gli altri a giocare con te?
 <br /><br /><i>Luca Pazzaglia  </i>
 <br /><strong>Presidente dell'Associazione Italiana Diplomacy</strong>     
@@ -76,13 +76,13 @@ printImage();
      
     <div id="diplomacy-giocare"> <img style="float: right" src="mod/img/fare.gif" width="108" height="127" title="cose da fare per giocare online" alt="giocare a diplomacy online in 5 minuti" />
     
-      <h3>Giocare online in 5 minuti</h3><br /> 
+      <h3>Giocare online a Diplomacy in 5 minuti</h3><br /> 
       
-      Iniziare a giocare è facilissimo. <br />
+      Iniziare a <strong>giocare online a Diplomacy</strong> è facilissimo. <br />
       <br /><br /><br />
       
-      <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  Per prima cosa è fondamentale dare un'occhiata <a href="intro.php">alle regole del gioco</a>.<br /><br /><br />
-      <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  A questo punto occorre <a href="register.php">registrarsi</a> su questo sito, oppure effettuare il <a href="logon.php">login</a> se hai già un account. La registrazione è gratuita! <br /><br /><br />
+      <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  Per prima cosa è fondamentale dare un'occhiata <a href="intro.php"><strong>alle regole del gioco Diplomacy</strong></a>.<br /><br /><br />
+      <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  A questo punto occorre <a href="register.php">registrarsi</a> sul sito, oppure effettuare il <a href="logon.php">login</a> se hai già un account. La registrazione è gratuita! <br /><br /><br />
       <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  Ora non rimane che iscriversi a qualche <a href="gamelistings.php">partita</a>. Se non c'è nessuna partita che soddisfa le tue preferenze di gioco, puoi <a href="gamecreate.php">crearne una</a>.
       
      <br /><br /><br /> La partita sta per cominciare preparati ad usare tutta la tua diplomazia per vincere!  In bocca al lupo.

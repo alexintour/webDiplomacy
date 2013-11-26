@@ -27,7 +27,7 @@ defined('IN_CODE') or die('This script can not be run by itself.');
  * @subpackage Static
  */
 
-print libHTML::pageTitle('Introduzione alle regole del gioco da tavolo Diplomacy','Impara a giocare a Diplomacy con questo facile e veloce regolamento.');
+print libHTML::pageTitle('Introduzione alle regole del gioco da tavolo Diplomacy','Diplomacy - regole del gioco - breve manuale introduttivo online ');
 
 ?>
 <p>

@@ -397,6 +397,7 @@ class libHTML
 		<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
 	<head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	 <meta http-equiv="content-language" content="it" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta name="robots" content="index,follow" />
 		<meta name="description" content="'.l_t('webDiplomacy is an online, multiplayer, turn-based strategy game that lets you play Diplomacy online.').'" />
