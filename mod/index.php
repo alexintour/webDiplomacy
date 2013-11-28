@@ -3,7 +3,7 @@
 	   <div class="homeNotice" >
 	      <div class="homeForumGroup homeForumAlt2">
 	         <div class="homeForumSubject homeForumTopBorder">
-	           <a href="http://forum.webdiplomacy.it">Forum della comunità online</a>
+	           <a href="http://forum.webdiplomacy.it/">Forum della comunità online</a>
 	         </div>        
 	         <div class="homeForumPostAlt1 homeForumPost">
 	             <div class="homeForumMessage">
@@ -14,7 +14,7 @@
     <?php /* tolto per la metà di sinistra, ma nella metà di destra serve <div style="clear:both"> </div>  */ ?><div class="hr"></div>
 	      <div class="homeForumGroup homeForumAlt2">
 	         <div class="homeForumSubject homeForumTopBorder">
-	           <a href="http://wiki.webdiplomacy.it">DiploWiki</a>
+	           <a href="http://wiki.webdiplomacy.it/">DiploWiki</a>
 	         </div>        
 	         <div class="homeForumPostAlt1 homeForumPost">
 	             <div class="homeForumMessage">
@@ -76,12 +76,12 @@ printImage();
      
     <div id="diplomacy-giocare"> <img style="float: right" src="mod/img/fare.gif" width="108" height="127" title="cose da fare per giocare online" alt="giocare a diplomacy online in 5 minuti" />
     
-      <h3>Giocare online in 5 minuti</h3><br /> 
+      <h3>Giocare a Diplomacy online in 5 minuti</h3><br /> 
       
       Iniziare a giocare è facilissimo. <br />
       <br /><br /><br />
       
-      <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  Per prima cosa è fondamentale dare un'occhiata <a href="intro.php">alle regole del gioco</a>.<br /><br /><br />
+      <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  Per prima cosa è fondamentale dare un'occhiata <a href="intro.php">alle regole</a>, uguali a quelle del gioco da tavolo.<br /><br /><br />
       <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  A questo punto occorre <a href="register.php">registrarsi</a> su questo sito, oppure effettuare il <a href="logon.php">login</a> se hai già un account. La registrazione è gratuita! <br /><br /><br />
       <img style="float: left" src="mod/img/check.gif" width="28" height="28" title="check option" alt="lista per giocare" />  Ora non rimane che iscriversi a qualche <a href="gamelistings.php">partita</a>. Se non c'è nessuna partita che soddisfa le tue preferenze di gioco, puoi <a href="gamecreate.php">crearne una</a>.
       

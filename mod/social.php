@@ -5,7 +5,7 @@
 <script type="text/javascript">
 //<![CDATA[
 (function() {
-    document.write('<a href="http://twitter.com/share" rel="nofollow" class="twitter-share-button" data-count="horizontal" data-text="Sito per giocare online al gioco da tavolo Diplomacy!" data-via="webdiplomacy_it" data-url="http://webdiplomacy.it">Tweet</a>');
+    document.write('<a href="http://twitter.com/share" rel="nofollow" class="twitter-share-button" data-count="horizontal" data-text="Sito per giocare online al gioco da tavolo Diplomacy!" data-via="webdiplomacy_it" data-url="http://webdiplomacy.it/">Tweet</a>');
     var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
     s.type = 'text/javascript';
     s.async = true;
@@ -41,16 +41,16 @@ ValidMe.setAttribute("data-count","true");
 <div xmlns:og="http://opengraphprotocol.org/schema/" style="display:none;"> <![CDATA[ <!--OpenGraph section-->
 <meta property="og:title" content="Diplomacy : il gioco da tavolo da giocare online in italiano." />
 <meta property="og:type" content="Questro è un gioco dove non conta la fortuna, ma la tua abilità. Confrontati contro altri giocatori reali. Saprai raggiungere i tuoi obiettivi nonostante tutto e tutti?" />
-<meta property="og:url" content="http://webdiplomacy.it" />
+<meta property="og:url" content="http://webdiplomacy.it/" />
 <meta property="og:image" content="http://webdiplomacy.it/mod/img/diplomacy.png" />
-<meta property="og:site_name" content="WebDiplomacy.it" />
+<meta property="og:site_name" content="WebDiplomacy.it/" />
 <meta property="fb:app_id" content="129584760427552" />
 ]]> </div>
 
 <script type="text/javascript">
 //<![CDATA[
 (function() {
-    document.write('<fb:like href="http://webdiplomacy.it" layout="button_count" show_faces="false" width="70"></fb:like>');
+    document.write('<fb:like href="http://webdiplomacy.it/" layout="button_count" show_faces="false" width="70"></fb:like>');
     var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
     s.type = 'text/javascript';
     s.async = true;

@@ -99,6 +99,10 @@ class Locale_Italian extends Locale_Abstract {
 			return 'locales/Italian/maps/AncMed/smallmapNames.png';
 		else if ( $resource == 'variants/AncMed/resources/mapNames.png')
 			return 'locales/Italian/maps/AncMed/mapNames.png';
+		else if( $resource == 'variants/ClassicFog/resources/smallmapNames.png' )
+            return 'locales/Italian/maps/ClassicFog/smallmapNames.png';
+        else if ( $resource == 'variants/ClassicFog/resources/mapNames.png')
+            return 'locales/Italian/maps/ClassicFog/mapNames.png';
 		else
 			return $resource;
 	}

@@ -17,3 +17,16 @@ return false;
 });
 
 /* FINE  tabs  per l'index di webdiplomacy */
+
+/* rotazione poster */
+ <!-- 
+ NumberOfImagesToRotate = 5;
+ // Specify the first and last part of the image tag. 
+ FirstPart = '<img src="mod/img/posters/ww1-diplomacy-poster';
+ LastPart = '.jpg" height="283" width="180" alt="Diplomacy ww1 poster" title=""style="float:right;margin: 10px">';
+ function printImage() {
+ var r = Math.ceil(Math.random() * NumberOfImagesToRotate);
+ document.write(FirstPart + r + LastPart);
+ }
+ //-->
+ /* FINE  rotazione poster */

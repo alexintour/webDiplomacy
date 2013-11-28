@@ -397,6 +397,7 @@ class libHTML
 		<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
 	<head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="content-language" content="it" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta name="robots" content="index,follow" />
 		<meta name="description" content="'.l_t('webDiplomacy is an online, multiplayer, turn-based strategy game that lets you play Diplomacy online.').'" />
@@ -600,7 +601,7 @@ class libHTML
 		// Items displayed in the menu
 		$links['blog.php']=array('name'=>'Blog', 'inmenu'=>TRUE, 'title'=>"A small blog with latest news and announcements.");
 		$links['index.php']=array('name'=>'Home', 'inmenu'=>FALSE, 'title'=>"See what's happening");
-		//$links['forum.php']=array('name'=>'Forum', 'inmenu'=>TRUE, 'title'=>"The forum; chat, get help, help others, arrange games, discuss strategies");
+		$links['http://forum.webdiplomacy.it/']=array('name'=>'Forum', 'inmenu'=>TRUE, 'title'=>"The forum; chat, get help, help others, arrange games, discuss strategies");
 		$links['gamelistings.php']=array('name'=>'Games', 'inmenu'=>TRUE, 'title'=>"Game listings; a searchable list of the games on this server");
 
 		if (is_object($User))
@@ -726,7 +727,7 @@ class libHTML
 		</div>
 		<div id="seperator"></div>
 		<div id="seperator-fixed"></div>
-		</div><div id=fix2></div>
+		</div><div id="fix2"></div>
 		<!-- Menu end. -->';
 
 		return $menu;
@@ -767,7 +768,9 @@ class libHTML
 			print self::footerCopyright();
 		}
 
-		print '</div></body></html>';
+		print '</div>';
+               include 'mod/statistics.php';
+        print '</body></html>';
 
 		close();
 	}
