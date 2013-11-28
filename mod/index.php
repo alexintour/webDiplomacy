@@ -14,7 +14,7 @@
     <?php /* tolto per la metà di sinistra, ma nella metà di destra serve <div style="clear:both"> </div>  */ ?><div class="hr"></div>
 	      <div class="homeForumGroup homeForumAlt2">
 	         <div class="homeForumSubject homeForumTopBorder">
-	           <a href="http://wiki.webdiplomacy.it">DiploWiki</a>
+	           <a href="http://wiki.webdiplomacy.it/">DiploWiki</a>
 	         </div>        
 	         <div class="homeForumPostAlt1 homeForumPost">
 	             <div class="homeForumMessage">
