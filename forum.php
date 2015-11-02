@@ -104,7 +104,12 @@ AND ($_REQUEST['newmessage'] != "") ) {
 
 	$new['sendtothread'] = $viewthread;
 
-		if( isset($_SESSION['lastPostText']) && $_SESSION['lastPostText'] == $new['message'] )
+		if( $User->isSilenced() )
+		{
+			$messageproblem = l_t("You have been silenced, if you think this is a mistake please contact the administrator.");
+			$postboxopen = !$new['sendtothread'];
+		}
+		elseif( isset($_SESSION['lastPostText']) && $_SESSION['lastPostText'] == $new['message'] )
 		{
 			$messageproblem = l_t("You are posting the same message again, please don't post repeat messages.");
 			$postboxopen = !$new['sendtothread'];
@@ -284,7 +289,6 @@ print '
 	<div class="message-subject"><strong>'.l_t('Post a new thread').'</strong></div>
 	<div style="clear:both;"></div>
 	</div>
-	<div class="hr"></div>
 	';
 	if( $User->isSilenced() ) {
 		print '<div class="message-body postbox" style="padding-top:0; padding-left:auto; padding-right:auto">';
@@ -422,7 +426,7 @@ while( $message = $DB->tabl_hash($tabl) )
 			$muteLink .= '</span>';
 		}
 	}
-	
+
 	print '<div class="hr userID'.$message['fromUserID'].' threadID'.$message['id'].'"></div>'; // Add the userID and threadID so muted users/threads dont create lines where their threads were
 
 	$switch = 3-$switch; // 1,2,1,2,1,2...

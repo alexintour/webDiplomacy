@@ -21,6 +21,7 @@
 defined('IN_CODE') or die('This script can not be run by itself.');
 
 require_once(l_r('objects/notice.php'));
+require_once(l_r('objects/useroptions.php'));
 require_once(l_r('objects/basic/set.php'));
 
 /**
@@ -170,6 +171,12 @@ class User {
 	public $online;
 
 	/**
+	 * The user's options
+	 * @var UserOptions
+	 */
+	public $options;
+
+	/**
 	 * Number of available points
 	 * @var int
 	 */
@@ -182,6 +189,15 @@ class User {
 	 * @var string
 	 */
 	public $muteReports;
+	
+	/**
+	 * The users reliability stats; civil disorders, nmrs, civil disorders taken over, phases where moves could have been submitted, games, reliability rating.
+	 * 
+	 * Generated in libGameMaster
+	 * 
+	 * @var int/double
+	 */
+	public $cdCount, $nmrCount, $cdTakenCount, $phaseCount, $gameCount, $reliabilityRating;
 
 	/**
 	 * Give this user a supplement of points
@@ -326,7 +342,7 @@ class User {
 
 		if( isset($userForm['username']) )
 		{
-			$SQLVars['username'] = $DB->escape($userForm['username']);
+			$SQLVars['username'] = trim($DB->escape($userForm['username']));
 		}
 
 		if( isset($userForm['password']) and $userForm['password'] )
@@ -344,7 +360,7 @@ class User {
 
 		if(isset($userForm['email']) and $userForm['email'] )
 		{
-			$userForm['email'] = $DB->escape($userForm['email']);
+			$userForm['email'] = trim($DB->escape($userForm['email']));
 			if( !libAuth::validate_email($userForm['email']) )
 			{
 				$errors[] = l_t("The e-mail address you entered isn't valid. Please enter a valid one");
@@ -428,7 +444,14 @@ class User {
 			u.muteReports,
 			u.silenceID,
 			u.notifications,
-			IF(s.userID IS NULL,0,1) as online
+			u.cdCount,
+			u.nmrCount,
+			u.cdTakenCount,
+			u.phaseCount,
+			u.gameCount,
+			u.reliabilityRating,
+			IF(s.userID IS NULL,0,1) as online,
+			u.deletedCDs
 			FROM wD_Users u
 			LEFT JOIN wD_Sessions s ON ( u.id = s.userID )
 			WHERE ".( $username ? "u.username='".$username."'" : "u.id=".$this->id ));
@@ -442,6 +465,10 @@ class User {
 		{
 			$this->{$name} = $value;
 		}
+		// For display, cdCount should include deletedCDs
+		$this->{'cdCount'} = $this->{'cdCount'} + $this->{'deletedCDs'};
+		// RR should be rounded
+		$this->reliabilityRating = round($this->reliabilityRating);
 
 		// Convert an array of types this user has into an array of true/false indexed by type
 		$this->type = explode(',', $this->type);
@@ -463,6 +490,8 @@ class User {
 		$this->notifications=new setUserNotifications($this->notifications);
 
 		$this->online = (bool) $this->online;
+
+		$this->options = new UserOptions($this->id);
 	}
 
 	/**
@@ -538,11 +567,19 @@ class User {
 		require_once(l_r('lib/message.php'));
 		$message = message::linkify($message);
 
-		if( $this->isUserMuted($FromUser->id) )
+		if( $FromUser->isSilenced() )
+        {
+			notice::send($FromUser->id, $this->id, 'PM', 'No', 'Yes',
+                l_t('Could not deliver message, you are currently silenced.') .'('. $FromUser->getActiveSilence()->reason .')', l_t('To:') .' '. $this->username,
+                $this->id);
+            return false;
+        }
+		else if( $this->isUserMuted($FromUser->id) )
 		{
 			notice::send($FromUser->id, $this->id, 'PM', 'No', 'Yes',
 				l_t('Could not deliver message, user has muted you.'), l_t('To:').' '.$this->username,
 				$this->id);
+			return false;
 		}
 		else
 		{
@@ -554,6 +591,7 @@ class User {
 			notice::send($FromUser->id, $this->id, 'PM', 'No', 'Yes',
 				l_t('You sent:').' <em>'.$message.'</em>', l_t('To:').' '.$this->username,
 				$this->id);
+			return true;
 		}
 	}
 
@@ -722,6 +760,8 @@ class User {
 		{
 			$rankingDetails['stats'][$status] = $number;
 		}
+		$rankingDetails['stats']['Civil disorder'] = $this->cdCount;
+		$rankingDetails['stats']['Civil disorders taken over'] = $this->cdTakenCount;
 
 		$tabl = $DB->sql_tabl( "SELECT COUNT(m.id), m.status, SUM(m.bet) FROM wD_Members AS m
 					INNER JOIN wD_Games AS g ON m.gameID = g.id

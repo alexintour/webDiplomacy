@@ -85,6 +85,7 @@ class processMember extends Member
 
 		$DB->sql_put("INSERT INTO wD_Members SET
 			userID = ".$userID.", gameID = ".$Game->id.", orderStatus='None,Completed,Ready', bet = 0, timeLoggedIn = ".time());
+                $DB->sql_put('DELETE FROM wD_WatchedGames WHERE gameID='.$Game->id.' AND userID='.$userID);
 
 		$Game->Members->load();
 
@@ -291,8 +292,10 @@ class processMember extends Member
 	/**
 	 * The user has left the game and can be taken over by other players, however
 	 * he hasn't completely left, so he can't yet be supplemented.
+	 *
+	 * ignore is true when this CD is forced by a moderator
 	 */
-	function setLeft()
+	function setLeft($ignore=0)
 	{
 		global $DB;
 
@@ -300,8 +303,8 @@ class processMember extends Member
 
 		// Register the civil disorder
 		$DB->sql_put(
-			"INSERT INTO wD_CivilDisorders ( gameID, userID, countryID, turn, bet, SCCount )
-			VALUES ( ".$this->gameID.", ".$this->userID.", ".$this->countryID.", ".$this->Game->turn.", ".$this->bet.", ".$this->supplyCenterNo.")"
+			"INSERT INTO wD_CivilDisorders ( gameID, userID, countryID, turn, bet, SCCount ,forcedByMod)
+			VALUES ( ".$this->gameID.", ".$this->userID.", ".$this->countryID.", ".$this->Game->turn.", ".$this->bet.", ".$this->supplyCenterNo.", $ignore)"
 		);
 
 		/*

@@ -53,7 +53,7 @@ $globalFaq = array(
 
 "Is this software related to phpDiplomacy?" => "This software used to be called phpDiplomacy until version 0.9.
 	Sorry for the confusion, we hate name changes too, but for our user-base the old 'php' prefix wasn't
-	the immidiately recognizable label that was intended.",
+	the immediately recognizable label that it was intended to be.",
 
 
 "The interface" => "Sub-section",
@@ -74,7 +74,7 @@ $globalFaq = array(
 	<li><strong>'gameID=<em>[number]</em>'</strong> / <strong>'threadID=<em>[number]</em>'</strong> / <strong>'userID=<em>[number]</em>'</strong> will have
 	a link to the appropriate game/thread/profile substituted into the message.</li></ul>",
 "Why do some things appear to change just after the page has loaded?" => "After a page is loaded JavaScript runs, making a few changes
-	(e.g. putting GMT/UTC times into your computer's timezone, making your posts bold, etc) which enhance the page.",
+	(e.g. putting GMT/UTC times into your computer's time zone, making your posts bold, etc) which enhance the page.",
 
 "Game rules" => "Sub-section",
 "I want to learn the basic rules" => "See the <a href='intro.php' class='light'>intro page</a>.",
@@ -86,8 +86,8 @@ $globalFaq = array(
 "If someone has to destroy a unit, but doesn't enter destroy orders, what unit is destroyed?" => "It's done as the DATC recommends:
 	It's the furthest from your home supply centers. Distance is defined as the smallest number of moves to get from the unit's position
 	to a home supply center. When calculating the smallest number of moves armies can move across seas, but fleets can only move across
-	seas and coasts. If there are two units both the same distance from a home supply center the territory which is first alphabetically
-	is removed first.",
+	seas and coasts. If there are two units both the same distance from a home supply center then fleets disband before armies. If there's still a tie, 
+	the territory which is first alphabetically is removed first.",
 "If a convoy is attacked does the convoy fail?" => "No; for a convoy to fail it has to be dislodged, and there must be no other convoys
 	the the army being convoyed can go through instead.",
 "What happens if I order to build/destroy two units in the same territory?" => "The first build order will be accepted, the second won't",
@@ -124,7 +124,7 @@ $globalFaq = array(
 
 	If your game has been crashed for a long time try asking about it in the forum.",
 "The phase ends \"Now\"? \"Processing has been paused\"?" => "When the server detects that no games have processed for a while
-	(over 30 minutes or so), or a moderator/admin sees a problem and his the panic button, all game processing is disabled until
+	(over 30 minutes or so), or a moderator/admin sees a problem and hits the panic button, all game processing is disabled until
 	the problem is resolved.<br />
 	After the all-clear is given games will usually be given time to make up for any during which orders couldn't be entered, and
 	processing will resume. Until that point if a game says it will be processed 'Now' that means it would process now, except
@@ -159,7 +159,7 @@ $globalFaq = array(
 "Feature Requests" => "Sub-section",
 "Better forum" => "A better forum would be good, but getting it to fit in and appear as part of webDiplomacy, rather than just
 	a separate site, is difficult, and would likely use more server resources than our efficient but lightweight built-in forum.<br />
-	At the moment we are trying to improve our existing forum in small incrememnts.",
+	At the moment we are trying to improve our existing forum in small increments.",
 "A point and click interactive map" => "This is being worked on, but progress is slow. If you know JavaScript and SVG/Canvas why not
 	carry on the work on the <a href='http://forum.webdiplomacy.net/' class='light'>development forum</a>?",
 "Translations" => "Eventually translations will be supported, but it is a long process and not a top priority.",
@@ -170,7 +170,7 @@ $globalFaq = array(
 
 	Also creating your own variants or porting
 	existing variants to the webDiplomacy variants system is easier than ever, from simple map-change variants all the
-	way to strange rule-changing variants, the system is flexible enough to accomadate your varaint ideas.
+	way to strange rule-changing variants, the system is flexible enough to accommodate your variant ideas.
 	",
 "Can I suggest a feature?" => "Feature suggestions are best made in the <a class='light' href='http://forum.webdiplomacy.net/'>developer forums</a>,
 	elsewhere they're likely to be missed. Remember that unless you can back-up your suggestion with code even good ideas may not get far.",

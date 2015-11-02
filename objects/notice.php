@@ -94,9 +94,14 @@ class notice
 			}
 			else
 			{
-				$UserPMTo->sendPM($User, $_REQUEST['message']);
-
-				return l_t("Message sent to %s successfully.",$UserPMTo->username);
+              if ( $UserPMTo->sendPM($User, $_REQUEST['message']) )
+              {
+                  return l_t("Message sent to %s successfully.",$UserPMTo->username);
+              } 
+              else 
+              {
+                  return l_t("Private message could not be sent. You may be silenced or muted.");
+              }
 			}
 		}
 		return false;
@@ -134,7 +139,7 @@ class notice
 		if( $this->isRespondable() )
 			$buf .= '<div class="homeForumPostAlt'.libHTML::alternate().' homeForumPost">'.$this->replyBox().'</div>';
 
-		$buf .= '	</div>';
+		$buf .= '	</div></div>';
 					//<div class="homeForumMessage">'.$post['message'].'</div>
 
 					/*
@@ -144,7 +149,6 @@ class notice
 					</div>
 					</div>';*/
 
-		$buf .= '<div class="hr"></div></div>';
 
 		return $buf;
 	}

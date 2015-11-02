@@ -21,6 +21,9 @@ div.pageTitle {
     font-weight:bold;
     padding:4px 20px;
 }
+.bottomborder {
+    border-bottom:#ccc 1px solid;
+}
 div.pageDescription {
     padding:4px 20px;
     color:#666;
@@ -38,6 +41,13 @@ span.points {
 			D),
 		only (1234D) */
 	white-space: nowrap;
+}
+
+.content-notice .gamelistings-tabs span {
+ 	display: inline-block;
+	margin-bottom: 0.5em;
+	margin-top: 0.5em;
+
 }
 input[type="text"], input[type="submit"], input[type="password"], textarea, select {
 	font-size: 14px;
@@ -140,6 +150,11 @@ li.formlisttitle {
 	font-weight: bold;
 }
 
+.spaced-button {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
 .form-submit {
 	font-weight: bold ! important;
 	color: #006699 ! important;
@@ -204,7 +219,7 @@ strong.description {
 p.notice {
 	font-weight: bold;
 	text-align: center;
-	margin:0px;
+	margin:6px 0px;
 }
 p.welcome {
 	margin-left: 20px;
@@ -365,7 +380,7 @@ div.content-notice {
 	width: 768px;
 	background-color: #fff;
 	border: 1px solid #aaa;
-	padding: 8px 15px;	
+	padding: 3px 15px;	
 	
 }
 div.content-board-header, div.content-home-header {
@@ -420,12 +435,13 @@ div.forum {
 	color: #777;
 }
 #chatboxtabs {
+	border-bottom: 1px solid #aaa;
+	padding-bottom: 3px;
+	position: relative;
 	font-size: 14px !important;
 	}
 div.gamelistings-tabs {
 	width: auto;
-	padding-top:3px;
-	padding-bottom:3px;
 	/*padding-left:20px;
 	padding-right:20px;*/
 	height:auto;
@@ -435,59 +451,53 @@ div.gamelistings-tabs {
 	border:0;
 	text-align:center;
 	font-size: 13px;
-	border-bottom:1px solid #aaa;
 	
 }
-div.gamelistings-tabs a.current {
+div.gamelistings-tabs a.current>span {
 	text-decoration:none;
-	background-color: #eaeaea;
-	color:#000;
+	background-color: #f0f0f0;
 	border-top:1px solid #888;
 	border-left:1px solid #888;
 	border-right:1px solid #888;
-	border-bottom:2px solid #000 ! important;
-}
-div.gamelistings-tabs a.current:hover {
-	text-decoration:none;
-	background-color: #e5e5e5;
-	border-bottom:2px solid #009902 ! important;
-	color:#009902 !important;
-}
+}        
 div.gamelistings-tabs a {
+	text-decoration:none;
+}
+	
+div.gamelistings-tabs span a,
+div.gamelistings-tabs > a > *,
+div.gamelistings-tabs:not(#chatboxtabs) > a
+{
 	white-space: nowrap;
 	text-decoration:none;
-	margin:0;
-	margin-left:5px;
-	margin-right:5px;
-	padding-right:6px;
-	padding-left:6px;
-	padding-top:3px;
-	padding-bottom:3px;
-	border:0;
+	margin:0px 5px 0px 5px;
+	padding:3px 6px 3px 6px;
 	background-color: #fafafa;	
-	border-top:1px solid #aaa;
-	border-left:1px solid #aaa;
-	border-right:1px solid #aaa;
-	
-	border-bottom:2px solid #006699 ! important;
+	border:1px solid #aaa;
+}        
+div#chatboxtabs.gamelistings-tabs a.current>span {
+	padding-bottom: 4px;
+	border-bottom: none;
 }
-div#chatboxtabs a {
-	margin-left:2px;
-	margin-right:2px;
-	padding-right:4px;
-	padding-left:4px;
-	padding-top:3px;
-	padding-bottom:3px;
+div#chatboxtabs a>span {
+	margin:0px 2px 0px 2px;
+	padding:3px 4px 3px 4px;
 }
-div.gamelistings-tabs a
-div.gamelistings-tabs a:hover {
+div.gamelistings-tabs a>span:hover,
+div.gamelistings-tabs span a:hover 
+{
 	text-decoration:none;
 	background-color: #f5f5f5;
-	border-bottom:2px solid #009902 ! important;
-	border-top:1px solid #009902 ! important;
-	border-left:1px solid #009902 ! important;
-	border-right:1px solid #009902 ! important;
+	border:1px solid #009902 ! important;
 }
+
+div#chatboxtabs.gamelistings-tabs a:hover>span {
+	text-decoration:none;
+	border-top:1px solid #000 ! important;
+	border-left:1px solid #000 ! important;
+	border-right:1px solid #000 ! important;
+        border-bottom: none ! important; 
+}	
 .postbox {
 	text-align:center;
 }
@@ -611,9 +621,9 @@ div.chatbox {
 	max-height: 180px;
 	overflow-x:hidden;
 	overflow-y:auto;
-	border-left: solid #c1c1c1 1px;
-	border-right: solid #c1c1c1 1px;
+        border-left: solid #c1c1c1 1px;
 	border-bottom: solid #c1c1c1 1px;
+	border-right: solid #c1c1c1 1px;
 }
 div.chatbox td {
 	overflow:hidden;

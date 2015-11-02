@@ -336,6 +336,13 @@ class Config
 	 * @var bool
 	 */
 	public static $facebookDebug=false;
+
+	/**
+	* True if this server is intended for development but hooked up to a live database. Disables some caching features
+	* @var bool
+	*/
+	public static $isBeta=false;
+
 }
 
 ?>

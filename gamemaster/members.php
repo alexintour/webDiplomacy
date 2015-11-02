@@ -145,18 +145,10 @@ class processMembers extends Members
 		{
 			assert('$Member->missedPhases >= 0 and $Member->missedPhases <= 2');
 
-			switch($Member->missedPhases)
+			if($Member->missedPhases == 2)
 			{
-				case 1:
-					/*
-					 * Players can be set to civil disorder with only one missed
-					 * phase if it looks like they're about to be defeated
-					 */
-					if( 1 < $Member->supplyCenterNo or 1 < $Member->unitNo )
-						break;
-				case 2:
-					$left=true;
-					$Member->setLeft();
+				$left=true;
+				$Member->setLeft();
 			}
 		}
 
@@ -537,6 +529,10 @@ class processMembers extends Members
 		if ( !$this->Game->isJoinable() )
 			throw new Exception(l_t("You cannot join this game."));
 
+		if ( !($this->Game->minimumReliabilityRating <= $User->reliabilityRating) )
+			throw new Exception(l_t("Your Reliability Rating of %s%% is not high enough to join this game, which is restricted to %s%% RR and above.",
+				$User->reliabilityRating, $this->Game->minimumReliabilityRating));
+
 		// We can join, the only question is how?
 
 		if ( $this->Game->phase == 'Pre-game' )
@@ -568,7 +564,7 @@ class processMembers extends Members
 			if ( $CD->status != 'Left' )
 				throw new Exception(l_t('The player selected is not in civil disorder.'));
 
-			$bet = $CD->pointsValue();
+			$bet = $CD->pointsValueInTakeover();
 			if ( $User->points < $bet )
 				throw new Exception(l_t("You do not have enough points to take over that countryID."));
 
@@ -583,6 +579,7 @@ class processMembers extends Members
 					SET userID = ".$User->id.", status='Playing', orderStatus=REPLACE(orderStatus,'Ready',''),
 						missedPhases = 0, timeLoggedIn = ".time()."
 					WHERE id = ".$CD->id);
+			$DB->sql_put('DELETE FROM wD_WatchedGames WHERE userID='.$User->id. ' AND gameID='.$this->Game->id);		
 
 			unset($this->ByUserID[$CD->userID]);
 			unset($this->ByStatus['Left'][$CD->id]);
@@ -624,6 +621,16 @@ class processMembers extends Members
 		$message = '<p class="notice">'.l_t('You are being redirected to %s. Good luck!','<a href="board.php?gameID='.$this->Game->id.'">'.$this->Game->name.'</a>').'</p>';
 
 		libHTML::notice(l_t("Joined %s",$this->Game->name), $message);
+	}
+
+	/**
+	 * Updates the reliability stats for the users in this game.
+	 */
+	function updateReliabilityStats()
+	{
+		global $DB;
+ 		require_once(l_r('gamemaster/gamemaster.php'));      	
+		$DB->sql_put(libGameMaster::RELIABILITY_QUERY . "WHERE u.id IN (".implode(",",array_keys($this->ByUserID)) . ')');
 	}
 
 	function processSummary()

@@ -168,6 +168,12 @@ class Game
 	public $potType;
 
 	/**
+	 * draw-votes-public/draw-votes-hidden
+	 * @var string
+	 */
+	public $drawType;
+
+	/**
 	 * Not-processing/Processing/Crashed/Paused
 	 * @var string
 	 */
@@ -208,6 +214,11 @@ class Game
 	 * If Strict all players must have completed their orders before the game will proceed.
 	 */
 	public $missingPlayerPolicy;
+
+	/**
+	 * The minimum value for Reliability Rating before a player can join this game
+	 */
+	public $minimumReliabilityRating;
 
 
 	/**
@@ -278,14 +289,29 @@ class Game
 			 * - The user is a moderator who isn't in the game
 			 */
 			if ( $this->anon == 'No' || $this->phase == 'Finished' || ($User->type['Moderator'] && !isset($this->Members->ByUserID[$User->id])) )
+			{
 				$this->isMemberInfoHidden = false;
+			}
 			else
+			{
 				$this->isMemberInfoHidden = true;
+			}
 		}
 
 		return $this->isMemberInfoHidden;
-
 	}
+
+	/**
+	 * This is a special case of isMemberInfoHidden that returns true if a moderator is seeing the member info (and a normal user wouldn't)
+	 *
+	 * @return boolean
+	 */                                                                                                                                    
+	public function moderatorSeesMemberInfo() {                                                                                            
+		global $User;
+
+		return (!($this->anon == 'No' || $this->phase == 'Finished') && $User->type['Moderator'] && !isset($this->Members->ByUserID[$User->id]));
+	}
+
 
 	function loadRow(array $row)
 	{
@@ -298,6 +324,35 @@ class Game
 		$this->private = isset($this->password);
 
 		$this->Variant = $GLOBALS['Variants'][$this->variantID];
+	}                         
+
+	function watched() 
+	{
+        	global $DB, $User;
+
+		$row = $DB->sql_row('SELECT * from wD_WatchedGames WHERE gameID='.$this->id.' AND userID=' . $User->id);
+		return $row != false;
+	}
+	function watch() 
+	{
+        	global $DB, $User;
+
+		if (! $this->watched())
+		{
+		        $DB->sql_put('INSERT INTO wD_WatchedGames (gameID, userID) VALUES ('.$this->id. ','.$User->id.')');
+		        $DB->sql_put('COMMIT');
+		}
+	}
+
+	function unwatch() 
+	{
+                global $DB, $User;
+
+	        if ($this->watched())
+		{
+			$DB->sql_put('DELETE from wD_WatchedGames WHERE gameID='. $this->id . ' AND userID='. $User->id);// . $this->id . ' AND userID=' . $User->id);
+			$DB->sql_put('COMMIT');
+		} 
 	}
 
 	/**
@@ -326,7 +381,9 @@ class Game
 			g.minimumBet,
 			g.anon,
 			g.pressType,
-			g.missingPlayerPolicy
+			g.missingPlayerPolicy,
+			g.drawType,
+			g.minimumReliabilityRating
 			FROM wD_Games g
 			WHERE g.id=".$this->id.' '.$this->lockMode);
 
@@ -458,7 +515,7 @@ class Game
 				$gamesCanProcess = true;
 			elseif( $Misc->Panic )
 				$gamesCanProcess = false;
-			elseif( (time()-$Misc->LastProcessTime) > Config::$downtimeTriggerMinutes*60 )
+			elseif( (time()-$Misc->LastProcessTime) > Config::$downtimeTriggerMinutes*60 || Config::$isBeta )
 				$gamesCanProcess = false;
 		}
 

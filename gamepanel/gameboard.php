@@ -31,35 +31,32 @@ require_once(l_r('gamepanel/game.php'));
 class panelGameBoard extends panelGame
 {
 	function mapHTML() {
+		global $User;
+
 		$mapTurn = (($this->phase=='Pre-game'||$this->phase=='Diplomacy') ? $this->turn-1 : $this->turn);
-		$smallmapLink = 'map.php?gameID='.$this->id.'&turn='.$mapTurn;
-		$largemapLink = $smallmapLink.'&mapType=large';
+		$smallmapLink = 'map.php?gameID='.$this->id.'&turn='.$mapTurn .($User->options->value['showMoves'] == 'No'? '&hideMoves':'');
+		$largemapLink = $smallmapLink.'&mapType=large'.($User->options->value['showMoves']=='No'?'&hideMoves':'');
 
 		$staticFilename=Game::mapFilename($this->id, $mapTurn, 'small');
-		if( file_exists($staticFilename) )
+		if( file_exists($staticFilename) && $User->options->value['showMoves'] == 'Yes' )
 			$smallmapLink = STATICSRV.$staticFilename.'?nocache='.rand(0,99999);
 
 		$map = '
 		<div id="mapstore">
 			<img id="mapImage" src="'.$smallmapLink.'" alt=" " title="'.l_t('The small map for the current phase. If you are starting a new turn this will show the last turn\'s orders').'" />
 			<p class="lightgrey" style="text-align:center">
-				<a href="#" onClick="loadMap('.$this->id.','.$mapTurn.',-1); return false;">
-					<img id="Start" src="'.l_s('images/historyicons/Start_disabled.png').'" alt="'.l_t('Start').'" title="'.l_t('View the map from the first turn').'" />
-				</a>
-				<a href="#" onClick="loadMapStep('.$this->id.','.$mapTurn.',-1); return false;">
-					<img id="Backward" src="'.l_s('images/historyicons/Backward_disabled.png').'" alt="'.l_t('Backward').'" title="'.l_t('View the map from the previous turn').'" />
-				</a>
-
-				<span id="LargeMapLink" class="lightgrey" style="width:150px"><a href="'.$largemapLink.'" target="_blank" class="light">
-					<img src="'.l_s('images/historyicons/external.png').'" alt="'.l_t('Open large map').'" title="'.l_t('This button will open the large map in a new window. The large map shows all the moves, and is useful when the small map isn\'t clear enough.').'" />
-				</a></span>
-
-				<a href="#" onClick="loadMapStep('.$this->id.','.$mapTurn.',1); return false;">
-					<img id="Forward" src="'.l_s('images/historyicons/Forward_disabled.png').'" alt="'.l_t('Forward').'" title="'.l_t('View the map from the next turn').'" />
-				</a>
-				<a href="#" onClick="loadMap('.$this->id.','.$mapTurn.','.$mapTurn.'); return false;">
-					<img id="End" src="'.l_s('images/historyicons/End_disabled.png').'" alt="'.l_t('End').'" title="'.l_t('View the map from the most recent turn').'" />
-				</a>
+				<a class="mapnav" href="#" onClick="loadMap('.$this->id.','.$mapTurn.',-1); return false;">
+                      <img id="Start" src="'.l_s('images/historyicons/Start_disabled.png').'" alt="'.l_t('Start').'" title="'.l_t('View the map from the first turn').'" /></a>
+				<a class="mapnav" href="#" onClick="loadMapStep('.$this->id.','.$mapTurn.',-1); return false;"><img id="Backward" src="'.l_s('images/historyicons/Backward_disabled.png').'" alt="'.l_t('Backward').'" title="'.l_t('View the map from the previous turn').'" /></a>
+                <!--    The following is the toggle for removing the movement arrows. Uncomment this section if you want the movement arrow toggle.
+                <a class="mapnav" href="#" onClick="toggleMoves('.$this->id.','.$mapTurn.'); return false;"><img id="NoMoves" src="images/historyicons/hidemoves.png" alt="NoMoves" title="Toggle movement lines" />
+                </a>                 -->
+			   <a id="LargeMapLink" class="mapnav" href="'.$largemapLink.'" target="_blank" class="light"><img src="'.l_s('images/historyicons/external.png').'" alt="'.l_t('Open large map').'" title="'.l_t('This button will open the large map in a new window. The large map shows all the moves, and is useful when the small map isn\'t clear enough.').'" /></a></span>
+                     
+				<a class="mapnav" href="#" onClick="loadMapStep('.$this->id.','.$mapTurn.',1); return false;"><img id="Forward" src="'.l_s('images/historyicons/Forward_disabled.png').'" alt="'.l_t('Forward').'" title="'.l_t('View the map from the next turn').'" /></a>
+				<a class="mapnav" href="#" onClick="loadMap('.$this->id.','.$mapTurn.','.$mapTurn.'); return false;"><img id="End" src="'.l_s('images/historyicons/End_disabled.png').'" alt="'.l_t('End').'" title="'.l_t('View the map from the most recent turn').'" /></a>'.
+				($this->Members->isJoined() ? '<a class="mapnav" href="#" onClick="togglePreview('.$this->id.','.$mapTurn.'); return false;"><img id="Preview" src="images/historyicons/Preview.png" alt="PreviewMoves" title="Show server side stored orders on the map" /></a>' : '').'
+							
 			</p>
 			<p id="History" class="lightgrey"></p>
 		</div>
@@ -81,7 +78,7 @@ class panelGameBoard extends panelGame
 	{
 		$buf = '';
 
-		if ( $this->turn > 0 || !( $this->phase == 'Pre-game' || $this->phase == 'Diplomacy' ) )
+		if ( $this->phase != 'Pre-game') 
 			$buf .= '
 				<div class="bar archiveBar">
 					'.$this->archiveBar().'
@@ -158,10 +155,11 @@ class panelGameBoard extends panelGame
 	 */
 	function showVoteForm($vVote, $vCancel)
 	{
-		$buf = '<form action="board.php?gameID='.$this->id.'#votebar" method="post">';
+		$buf = '<form onsubmit="return confirm(\''. l_t("Are you sure you want to cast this vote?").'\');" action="board.php?gameID='.$this->id.'#votebar" method="post">';
 		$buf .= '<input type="hidden" name="formTicket" value="'.libHTML::formTicket().'" />';
 
-		$buf .= '<div class="memberUserDetail">';
+        $buf .= '<div class="memberUserDetail">';
+
 		foreach($vVote as $vote)
 		{
 			if ( $vote == 'Pause' && $this->processStatus == 'Paused' )
@@ -169,7 +167,9 @@ class panelGameBoard extends panelGame
 
 			$buf .= '<input type="submit" class="form-submit" name="'.$vote.'" value="'.l_t($vote).'" /> ';
 		}
-		$buf .= '</div>';
+		$buf .= '</div></form>';
+		$buf .= '<form onsubmit="return confirm(\''. l_t("Are you sure you want to withdraw this vote?").'\');" action="board.php?gameID='.$this->id.'#votebar" method="post">';
+		$buf .= '<input type="hidden" name="formTicket" value="'.libHTML::formTicket().'" />';
 
 		if( $vCancel )
 		{
@@ -185,7 +185,8 @@ class panelGameBoard extends panelGame
 			$buf .= '</div>';
 		}
 
-		$buf .= '</form><div style="clear:both"></div>';
+        $buf .= '</form><div style="clear:both"></div>';
+
 		return $buf;
 	}
 
@@ -231,7 +232,7 @@ class panelGameBoard extends panelGame
 	{
 		global $User;
 		libHTML::$alternate=2;
-		$buf = '<div class="titleBar barAlt'.libHTML::alternate().'">
+		$buf = '<div class="titleBar barAlt1">
 				'.$this->titleBar().'
 			</div>';
 
@@ -239,7 +240,7 @@ class panelGameBoard extends panelGame
 		if ( $noticeBar )
 		{
 			$buf .= '
-				<div class="bar gameNoticeBar barAlt'.libHTML::alternate().'">
+				<div class="bar gameNoticeBar barAlt1">
 					'.$noticeBar.'
 				</div>';
 		}

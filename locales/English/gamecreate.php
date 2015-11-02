@@ -153,14 +153,14 @@ else
 
 	<li class="formlisttitle">Pot type:</li>
 	<li class="formlistfield">
-		<input type="radio" name="newGame[potType]" value="Points-per-supply-center" checked > Points-per-supply-center<br />
-		<input type="radio" name="newGame[potType]" value="Winner-takes-all"> Winner-takes-all
+		<input type="radio" name="newGame[potType]" value="Points-per-supply-center"> Points-per-supply-center<br />
+		<input type="radio" name="newGame[potType]" value="Winner-takes-all" checked > Winner-takes-all
 	</li>
 	<li class="formlistdesc">
 		An expert setting: Should the winnings be split up according to who has the most supply centers, or should the winner
 		get everything (<a href="points.php#ppscwta" class="light">read more</a>).<br /><br />
 
-		<strong>Default:</strong> Points-per-supply-center
+		<strong>Default:</strong> Winner-takes-all
 	</li>
 
 	<li class="formlisttitle">
@@ -189,6 +189,18 @@ else
 
 		<br /><br /><strong>Default:</strong> Allow all
 	</li>
+	<li class="formlisttitle">
+		Draw votes:
+	</li>
+	<li class="formlistfield">
+		<input type="radio" name="newGame[drawType]" value="draw-votes-public" checked>Public draw votes
+		<input type="radio" name="newGame[drawType]" value="draw-votes-hidden">Hidden draw votes
+	</li>
+	<li class="formlistdesc">
+		Whether or not draw votes can be seen by the other players. In both modes, the game will be drawn when all players have voted draw. However, if draw votes are 
+		hidden then you are the only one who knows whether you have voted to draw or not. 
+		<br /><br /><strong>Default:</strong>Public draw votes
+	</li>
 
 	<li class="formlisttitle">
 		Joining pre-game period length: (5 minutes - 10 days)
@@ -209,7 +221,26 @@ else
 
 		<br /><br /><strong>Default:</strong> The same as phase length
 	</li>
-
+	<li class="formlisttitle">
+		Reliability Requirements
+	</li>
+	<li class="formlistfield">
+		Reliability rating: <input id="minRating" type="text" name="newGame[minimumReliabilityRating]" size="2" value="0"
+			style="text-align:right;"
+			onkeypress="if (event.keyCode==13) this.blur(); return event.keyCode!=13"
+			onChange="
+				this.value = parseInt(this.value);
+				if (this.value == 'NaN' ) this.value = 0;
+				if (this.value < 0 ) this.value = 0;
+				if (this.value > 100 ) this.value = 100;
+				"/>% or better.  
+	</li>
+	<li class="formlistdesc">
+		The minimum reliability rating that a player must have before they can join your game. If players miss turns or go in to Civil Disorder (by not checking the game), then
+		their reliability rating will go down. If you have a low reliability rating, then you can improve it by playing games and not missing turns.
+		<br /><br /><strong>Default:</strong> 0 (No restrictions)
+	</li>
+	   
 	<li class="formlisttitle">
 		<img src="images/icons/lock.png" alt="Private" /> Password protect (optional):
 	</li>

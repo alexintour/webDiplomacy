@@ -200,6 +200,8 @@ class searchIsPublic extends searchItemRadio
 	public $name='isPublic';
 	protected $label='Access type';
 	protected $options=array('-'=>'All','Yes'=>'Public','No'=>'Private');
+	
+	protected $defaults=array('Joinable'=>'Yes');
 
 	function sql(&$TABLES,&$WHERE,&$ORDER)
 	{
@@ -211,6 +213,21 @@ class searchIsPublic extends searchItemRadio
 			$WHERE[] = $expr;
 	}
 }
+class searchDrawType extends searchItemRadio
+{
+	public $name='drawType';
+	protected $label='Draw votes';
+	protected $options=array('-'=>'All','draw-votes-public'=>'Public draw votes','draw-votes-hidden'=>'Hidden draw votes');
+
+	function sql(&$TABLES,&$WHERE,&$ORDER)
+	{
+		if($this->value != '-')
+		{
+			$WHERE[] = "drawType = '".$this->value."'";
+		}
+	}
+}
+
 class searchPotType extends searchItemRadio
 {
 	public $name='potType';
@@ -441,6 +458,19 @@ class searchIsAnonymous extends searchItemRadio
 
 	protected $defaults=array('Profile'=>'No');
 	protected $locks=array('Profile');
+
+	function __construct($searchType) 
+	{
+		global $User;
+
+		if ( ($searchType == 'Profile') && ($User->type['Moderator']) )
+		{
+			$this->locks = array();
+			$this->defaults = array();
+		}
+
+		parent::__construct($searchType);
+	}
 
 	function sql(&$TABLES,&$WHERE,&$ORDER)
 	{

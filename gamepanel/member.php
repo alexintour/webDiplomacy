@@ -48,11 +48,12 @@ class panelMember extends Member
 		$buf = '';
 		libHTML::alternate();
 		if ( $this->Game->phase != 'Pre-game' )
-			$buf .= '<div class="panelBarGraph memberProgressBar barAlt'.libHTML::$alternate.'">'.$this->memberProgressBar().'</div>';
+			$buf .= '<div class="panelBarGraph memberProgressBar barAlt1">'.$this->memberProgressBar().'</div>';
+			
 		else
 			$buf .= '<div class="panelBarGraph memberProgressBarBlank"> </div>';
 
-		$buf .= '<div class="memberBoardHeader barAlt'.libHTML::$alternate.' barDivBorderTop ">
+		$buf .= '<div class="memberBoardHeader barAlt1 barDivBorderTop ">
 			<table><tr class="member">';
 
 		$buf .= '
@@ -125,16 +126,16 @@ class panelMember extends Member
 	}
 
 	/**
-	 * The members country name, colored
+	 * The members country name, colored, with optional HTML inside the span
 	 * @return string
 	 */
-	function memberCountryName()
+	function memberCountryName($append='')
 	{
 		global $User;
 
 		if( $this->countryID != 0 )
 			return '<span class="country'.$this->countryID.' '.($User->id==$this->userID?'memberYourCountry':'').' memberStatus'.$this->status.'">'.
-				l_t($this->country).'</span>';
+				l_t($this->country).$append.'</span>';
 		else
 			return '';
 	}
@@ -356,13 +357,32 @@ class panelMember extends Member
 	 */
 	function memberVotes()
 	{
+        	global $User;
+
 		$buf=array();
 		foreach($this->votes as $voteName)
 		{
 			if ( $voteName == 'Pause' && $this->Game->processStatus=='Paused' )
 				$voteName = 'Unpause';
+			// Do we hide draws?
+			if ( $voteName == 'Draw' && $this->Game->drawType == 'draw-votes-hidden' 
+				&& $User->id != $this->userID ) 
+			{
+				// Moderators can see draws in games they're not in
+				if (($User->type['Moderator']) && (! $this->Game->Members->isJoined())) 
+				{
+					$buf[]=l_t("(Hidden Draw)");
+				}
+				continue;
+			}
 			$buf[]=l_t($voteName);
 		}
+
+		// Display hidden draw votes message if appropriate
+		if ( $this->Game->drawType == 'draw-votes-hidden'
+			&& $User->id != $this->userID 
+			&& !(($User->type['Moderator']) && (! $this->Game->Members->isJoined()))) 
+			$buf[]=l_t("(any draw votes are hidden)");
 
 		if( count($buf) )
 			return l_t('Votes:').' <span class="memberVotes">'.implode(', ',$buf).'</span>';

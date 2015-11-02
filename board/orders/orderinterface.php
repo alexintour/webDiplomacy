@@ -334,7 +334,7 @@ class OrderInterface
 		foreach($this->Orders as $Order)
 		{
 			$alternate = ! $alternate;
-			$html .= '<tr class="barAlt'.($alternate ? '1' : '2').'">
+			$html .= '<tr class="barAlt1">
 				<td class="uniticon"><span id="orderID'.$Order->id.'UnitIconArea"></span></td>
 				<td class="order"><div id="orderID'.$Order->id.'">'.l_t('Loading order').'...</div></td>
 				</tr>';
@@ -342,9 +342,9 @@ class OrderInterface
 
 		$html .= "</table>".'
 		<div style="text-align:center;"><span id="ordersNoticeArea'.$this->memberID.'"></span>
-			<input id="UpdateButton'.$this->memberID.'" type="Submit" class="form-submit" name="'.
+			<input id="UpdateButton'.$this->memberID.'" type="Submit" class="form-submit spaced-button" name="'.
 				l_t('Update').'" value="'.l_t('Save').'" disabled />
-			<input id="FinalizeButton'.$this->memberID.'" type="Submit" class="form-submit" name="'.
+			<input id="FinalizeButton'.$this->memberID.'" type="Submit" class="form-submit spaced-button" name="'.
 				l_t($this->orderStatus->Ready?'Not ready':'Ready').'" value="'.l_t($this->orderStatus->Ready?'Not ready':'Ready').'" disabled />
 		</div>
 	</form>';

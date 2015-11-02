@@ -232,25 +232,80 @@ if ( isset($_REQUEST['detail']) )
 			break;
 
 		case 'civilDisorders':
-			libAuth::resourceLimiter('view civil disorders',5);
+			if ( $User->type['Moderator'] || $User->id == $UserProfile->id ) {
 
-			$tabl = $DB->sql_tabl("SELECT g.name, c.countryID, c.turn, c.bet, c.SCCount
-				FROM wD_CivilDisorders c INNER JOIN wD_Games g ON ( c.gameID = g.id )
-				WHERE c.userID = ".$UserProfile->id);
+				$tabl = $DB->sql_tabl("SELECT g.name, c.countryID, c.turn, c.bet, c.SCCount, c.gameId, c.forcedByMod
+					FROM wD_CivilDisorders c INNER JOIN wD_Games g ON ( c.gameID = g.id )
+					WHERE c.userID = ".$UserProfile->id . ($User->type['Moderator'] ? '' : ' AND c.forcedByMod = 0'));
+	
+				print '<h4>'.l_t('Civil disorders:').'</h4>
+					<ul>';
+					
+				if ($DB->last_affected() == 0) {
+					print l_t('No civil disorders found for this profile.');
+				}
 
-			print '<h4>'.l_t('Civil disorders:').'</h4>
-				<ul>';
-			while(list($name, $countryID, $turn, $bet, $SCCount)=$DB->tabl_row($tabl))
-			{
-				print '<li>
-					'.l_t('Game:').' <strong>'.$name.'</strong>,
-					'.l_t('country #:').' <strong>'.$countryID.'</strong>,
-					'.l_t('turn:').' <strong>'.$turn.'</strong>,
-					'.l_t('bet:').' <strong>'.$bet.'</strong>,
-					'.l_t('supply centers:').' <strong>'.$SCCount.'</strong>
-					</li>';
+				while(list($name, $countryID, $turn, $bet, $SCCount,$gameID,$forcedByMod)=$DB->tabl_row($tabl))
+				{
+					print '<li>
+					'.l_t('Game:').' <strong><a href="board.php?gameID='.$gameID.'">'.$name.'</a></strong>,
+						'.l_t('country #:').' <strong>'.$countryID.'</strong>,
+						'.l_t('turn:').' <strong>'.$turn.'</strong>,
+						'.l_t('bet:').' <strong>'.$bet.'</strong>,
+						'.l_t('supply centers:').' <strong>'.$SCCount.'</strong>';
+						if ( $User->type['Moderator'] ) print ','.l_t('ignored:').' <strong>'.$forcedByMod.'</strong>';
+						print '</li>';
+				}
+				print '</ul>';
+
+				$tabl = $DB->sql_tabl("SELECT c.countryID, c.turn, c.bet, c.SCCount, c.gameId, c.forcedByMod
+					FROM wD_CivilDisorders c LEFT JOIN wD_Games g ON c.gameID = g.id
+					WHERE g.id is null AND c.userID = ".$UserProfile->id . ($User->type['Moderator'] ? '' : ' AND c.forcedByMod = 0'));
+					
+				if ($DB->last_affected() != 0) {
+					print '<h4>'.l_t('Cancelled civil disorders:').'</h4><ul>';
+					while(list($countryID, $turn, $bet, $SCCount,$gameID,$forcedByMod)=$DB->tabl_row($tabl))
+					{
+						print '<li>
+						'.l_t('Game:').' <strong>'.$gameID.'</strong>,
+							'.l_t('country #:').' <strong>'.$countryID.'</strong>,
+							'.l_t('turn:').' <strong>'.$turn.'</strong>,
+							'.l_t('bet:').' <strong>'.$bet.'</strong>,
+							'.l_t('supply centers:').' <strong>'.$SCCount.'</strong>';
+							if ( $User->type['Moderator'] ) print ','.l_t('ignored:').' <strong>'.$forcedByMod.'</strong>';
+							print '</li>';
+					}
+					print "</ul>";
+				}
+				if ($UserProfile->deletedCDs != 0) {
+					print 'Additionally, there are ' . $UserProfile->deletedCDs . ' deleted CDs for this account (eg, self CD positions retaken by this user).';
+				}
+				print '<h4>'.l_t('NMRs:').'</h4><ul>';
+				$tabl = $DB->sql_tabl("SELECT n.gameID, n.countryID, n.turn, n.bet, n.SCCount, g.name FROM wD_NMRs n LEFT JOIN wD_Games g ON n.gameID = g.id WHERE n.userID = ".$UserProfile->id);
+				if ($DB->last_affected() != 0) {
+					while(list($gameID, $countryID, $turn, $bet, $SCCount, $name)=$DB->tabl_row($tabl))
+					{                                          
+						print '<li>';
+						if ($name != '') {
+							print l_t('Game:').' <strong><a href="board.php?gameID='.$gameID.'">'.$name.'</a></strong> ';
+						} else {	
+							print l_t('Game:').' <strong>'.$gameID.' '.l_t('(Cancelled)').'</strong> ';
+						}
+						print l_t('country #:').' <strong>'.$countryID.'</strong>,
+							'.l_t('turn:').' <strong>'.$turn.'</strong>,
+							'.l_t('bet:').' <strong>'.$bet.'</strong>,
+							'.l_t('supply centers:').' <strong>'.$SCCount.'</strong>
+                                                 	</li>';
+					}
+				} else {
+					print l_t('No NMRs found for this profile.');
+				}
+				print '</ul>';
+
+			} else {
+                         	print l_t('You do not have permission to view this page.');
 			}
-			print '</ul>';
+
 			break;
 
 		case 'reports':
@@ -338,8 +393,6 @@ if( $total )
 		print '</li>';
 	}
 
-	print '<li>'.l_t('Total (finished): <strong>%s</strong>',$total).'</li>';
-
 	foreach($rankingDetails['stats'] as $name => $status)
 	{
 		if ( in_array($name, $includeStatus) ) continue;
@@ -348,6 +401,16 @@ if( $total )
 			$status -= $rankingDetails['anon'][$name];
 		print '<li>'.l_t($name.': <strong>%s</strong>',$status).'</li>';
 	}
+
+	print '<li>'.l_t('No moves received / received:').' <strong>'.$UserProfile->nmrCount.'/'.$UserProfile->phaseCount.'</strong></li>';
+	print '<li>'.l_t('Reliability rating:').' <strong>'.($UserProfile->reliabilityRating).'%</strong>';
+	if( $User->type['Moderator'] || $User->id == $UserProfile->id )
+	{
+		print ' <a class="light" href="profile.php?detail=civilDisorders&userID='.$UserProfile->id.'">'.l_t('breakdown').'</a>';
+	}                                                                                                         
+	print '</li>';
+	
+	print '<li>'.l_t('Total (finished): <strong>%s</strong>',$total).'</li>';
 
 	if ( $rankingDetails['takenOver'] )
 		print '<li>'.l_t('Left and taken over: <strong>%s</strong>',$rankingDetails['takenOver']).
@@ -414,8 +477,9 @@ $liked = ($liked ? '<strong>'.l_t('Liked:').'</strong> '.$liked : '');
 
 print '<li><strong>'.l_t('Forum posts:').'</strong> '.$posts.'<br />
 	<strong>'.l_t('View:').'</strong> <a class="light" href="profile.php?detail=threads&userID='.$UserProfile->id.'">'.l_t('Threads').'</a>,
-		<a class="light" href="profile.php?detail=replies&userID='.$UserProfile->id.'">'.l_t('replies').'</a><br />
-		'.implode(' / ',array($likes,$liked)).'
+		<a class="light" href="profile.php?detail=replies&userID='.$UserProfile->id.'">'.l_t('replies').'</a>';
+
+print '<br/>'.implode(' / ',array($likes,$liked)).'
 	</li>';
 unset($likes,$liked);
 
@@ -487,18 +551,18 @@ if ( $User->type['Moderator'] && $User->id != $UserProfile->id )
 		$modActions[] = libHTML::admincp('makeDonator',array('userID'=>$UserProfile->id), l_t('Give donator benefits'));
 
 	if( $User->type['Admin'] && !$UserProfile->type['Moderator'] )
-		$modActions[] = libHTML::admincp('giveModerator',array('userID'=>$UserProfile->id), l_t('Make moderator'));
+		$modActions[] = libHTML::admincp('giveModerator',array('userID'=>$UserProfile->id), l_t('Make moderator'),true);
 
 	if( $User->type['Admin'] && ($UserProfile->type['Moderator'] && !$UserProfile->type['Admin']) )
-		$modActions[] = libHTML::admincp('takeModerator',array('userID'=>$UserProfile->id), l_t('Remove moderator'));
+		$modActions[] = libHTML::admincp('takeModerator',array('userID'=>$UserProfile->id), l_t('Remove moderator'),true);
 	
-	if( $User->type['Admin'] && $UserProfile->type['ForumModerator'] )
-		$modActions[] = libHTML::admincp('giveForumModerator',array('userID'=>$UserProfile->id), l_t('Make forum moderator'));
+	if( $User->type['Admin'] && !$UserProfile->type['ForumModerator'] )
+		$modActions[] = libHTML::admincp('giveForumModerator',array('userID'=>$UserProfile->id), l_t('Make forum moderator'),true);
 	
 	if( $User->type['Admin'] && ($UserProfile->type['ForumModerator'] && !$UserProfile->type['Admin']) )
-		$modActions[] = libHTML::admincp('takeForumModerator',array('userID'=>$UserProfile->id), l_t('Remove forum moderator'));
+		$modActions[] = libHTML::admincp('takeForumModerator',array('userID'=>$UserProfile->id), l_t('Remove forum moderator'),true);
 	
-	$modActions[] = libHTML::admincp('reportMuteToggle',array('userID'=>$UserProfile->id), l_t(($UserProfile->muteReports=='No'?'Mute':'Unmute').' mod reports'));
+	$modActions[] = libHTML::admincp('reportMuteToggle',array('userID'=>$UserProfile->id), l_t(($UserProfile->muteReports=='No'?'Mute':'Unmute').' mod reports'),true);
 
 	$modActions[] = '<a href="admincp.php?tab=Multi-accounts&aUserID='.$UserProfile->id.'" class="light">'.
 		l_t('Enter multi-account finder').'</a>';
@@ -553,9 +617,15 @@ if ( $User->type['User'] && $User->id != $UserProfile->id)
 		}
 		else
 		{
-			$UserProfile->sendPM($User, $_REQUEST['message']);
+			if ( $UserProfile->sendPM($User, $_REQUEST['message']) )
+            {
+                print '<p class="notice">'.l_t('Private message sent successfully.').'</p>';
+            }
+			else 
+            {
+                print '<p class="notice">'.l_t('Private message could not be sent. You may be silenced or muted.').'</p>';
+            }
 
-			print '<p class="notice">'.l_t('Private message sent successfully.').'</p>';
 		}
 	}
 

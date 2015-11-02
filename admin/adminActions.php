@@ -38,7 +38,7 @@ class adminActions extends adminActionsForms
 			),
 			'cancelGame' => array(
 				'name' => 'Cancel game',
-				'description' => 'Splits points among all players in a game equally, and deletes the game.',
+				'description' => 'Refunds points each player has bet, and deletes the game.',
 				'params' => array('gameID'=>'Game ID'),
 			),
 			'togglePause' => array(
@@ -167,7 +167,15 @@ class adminActions extends adminActionsForms
 					'reallocations'=>'Reallocations list (e.g "<em>R,T,A,G,U,F,E</em>")'
 					)
 			),
-			'alterMessaging' => array(
+	        	'drawType' => array(
+				'name' => 'Change the draw type',
+				'description' => 'Change a game\'s draw type (public or hidden).',
+				'params' => array(
+					'gameID'=>'Game ID',
+					'newSetting'=>'Enter a number for the desired setting: 1=Public, 2=Hidden'
+				),
+			),
+	        	'alterMessaging' => array(
 				'name' => 'Alter game messaging',
 				'description' => 'Change a game\'s messaging settings, e.g. to convert from gunboat to public-only or all messages allowed.',
 				'params' => array(
@@ -422,6 +430,25 @@ class adminActions extends adminActionsForms
 		$DB->sql_put("UPDATE wD_Users SET muteReports=IF(muteReports='Yes','No','Yes') WHERE id=".$userID);
 		return l_t("User's reporting ability has been toggled.");
 	}
+	public function drawType(array $params)
+	{
+		global $DB;
+
+		$gameID=(int)$params['gameID'];
+		$newSetting=(int)$params['newSetting'];
+
+		switch($newSetting)
+		{
+			case 1: $newSettingName='draw-votes-public'; break;
+			case 2: $newSettingName='draw-votes-hidden'; break;
+			default: throw new Exception(l_t("Invalid draw vote setting - enter 1 (public) or 2 (hidden)"));
+		}
+
+		$DB->sql_put("UPDATE wD_Games SET drawType = '".$newSettingName."' WHERE id = ".$gameID);
+
+		return l_t('Game changed to drawType=%s.',$newSettingName);
+	}
+
 	public function alterMessaging(array $params)
 	{
 		global $DB;
@@ -600,10 +627,6 @@ class adminActions extends adminActionsForms
 		return 'Process time set to now successfully';
 	}
 
-	public function panicConfirm(array $params)
-	{
-		return l_t('Are you sure? This should only be used if something is damaging the server');
-	}
 	public function panic(array $params)
 	{
 		global $Misc;
@@ -881,7 +904,8 @@ class adminActions extends adminActionsForms
 			if( $Game->phase == 'Pre-game' || $Game->phase == 'Finished' )
 				throw new Exception(l_t("Invalid phase to set CD"));
 
-			$Game->Members->ByUserID[$User->id]->setLeft();
+			$Game->Members->ByUserID[$User->id]->setLeft(1);
+			$Game->resetMinimumBet();
 		}
 		else
 		{
@@ -893,12 +917,13 @@ class adminActions extends adminActionsForms
 
 				$Variant=libVariant::loadFromGameID($gameID);
 				$Game = $Variant->processGame($gameID);
-				$Game->Members->ByUserID[$User->id]->setLeft();
+				$Game->Members->ByUserID[$User->id]->setLeft(1);
+				$Game->resetMinimumBet();
 			}
 		}
 
 		return l_t('This user put into civil-disorder'.
-			((isset($params['gameID']) && $params['gameID'])?', in this game':', in all his games').'?');
+			((isset($params['gameID']) && $params['gameID'])?', in this game':', in all his games'));
 	}
 
 	public function banUserConfirm(array $params)
@@ -969,8 +994,6 @@ class adminActions extends adminActionsForms
 			{
 				// The game may need a time extension to allow for a new player to be added
 
-				$Game->resetMinimumBet();
-				
 				// Would the time extension would give a difference of more than ten minutes? If not don't bother
 				if ( (time() + $Game->phaseMinutes*60) - $Game->processTime > 10*60 ) {
 
@@ -989,13 +1012,18 @@ class adminActions extends adminActionsForms
 				}
 			}
 
+			// IF the game is still running first remove the player from the game and reset the minimum bet so other can join.
+			if( $Game->phase != 'Finished' && $Game->phase != 'Pre-game')
+			{
+				$Game->Members->ByUserID[$userID]->setLeft(1);
+				$Game->resetMinimumBet();
+			}
+
 			libGameMessage::send('Global','GameMaster', $banMessage);
 
 			$Game->Members->sendToPlaying('No', l_t('%s was banned, see in-game for details.',$banUser->username));
 		}
 
-		$DB->sql_put("UPDATE wD_Members SET status = 'Left', orderStatus=CONCAT(orderStatus,',Ready')
-					WHERE userID = ".$userID." AND status = 'Playing'");
 		$DB->sql_put("UPDATE wD_Orders o INNER JOIN wD_Members m ON ( m.gameID = o.gameID AND m.countryID = o.countryID )
 					SET o.toTerrID = NULL, o.fromTerrID = NULL
 					WHERE m.userID = ".$userID);
@@ -1041,44 +1069,6 @@ class adminActions extends adminActionsForms
 		return l_t('This user was unbanned.');
 	}
 
-	public function setCivilDisorderConfirm(array $params)
-	{
-		global $DB;
-
-		$User = new User($params['userID']);
-
-		require_once(l_r('objects/game.php'));
-		$Variant=libVariant::loadFromGameID($params['gameID']);
-		$Game = $Variant->Game($params['gameID']);
-
-		return l_t('Are you sure you want to set this user to civil disorder in this game?');
-	}
-	public function setCivilDisorder(array $params)
-	{
-		global $DB;
-
-		$User = new User($params['userID']);
-
-		require_once(l_r('gamemaster/game.php'));
-		$Variant=libVariant::loadFromGameID($params['gameID']);
-		$Game = $Variant->processGame($params['gameID']);
-
-		foreach($Game->Members->ByID as $Member)
-		{
-			if ( $User->id != $Member->userID ) continue;
-
-			if ( $Member->status == 'Playing' )
-			{
-				$DB->sql_put("UPDATE wD_Members SET status = 'Left' WHERE id=".$Member->id);
-				$DB->sql_put("INSERT INTO wD_CivilDisorders ( gameID, userID, countryID, turn, bet, SCCount )
-					VALUES ( ".$Game->id.", ".$User->id.", ".$Member->countryID.", ".$Game->turn.", ".$Member->bet.", ".$Member->SCCount.")");
-
-				return l_t('User set to civil disorder in game');
-			}
-		}
-
-		throw new Exception(l_t("User not in specified game"));
-	}
 	public function setDirector(array $params)
 	{
 		global $DB;

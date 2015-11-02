@@ -61,13 +61,13 @@ class libHTML
 	 */
 	static function loggedOn($userID)
 	{
-		return '<img style="'.self::$hideStyle.'" class="userOnlineImg" userID="'.$userID.'" src="'.l_s('images/icons/online.png').'" alt="'.
+		return '<img class="userOnlineImg" userID="'.$userID.'" src="'.l_s('images/icons/online.png').'" alt="'.
 			l_t('Online').'" title="'.l_t('User currently logged on').'" />';
 	}
 
 	static function platinum()
 	{
-		return ' <img src="'.l_s('images/icons/platinum.png').'" alt="(P)" title="'.l_t('Donator - platinum').'" />';
+		return ' <img src="'.l_s('images/icons/platinum.png').'" alt="(P)" title="'.l_t('Co - Site Owner').'" />';
 	}
 
 	static function gold()
@@ -117,7 +117,7 @@ class libHTML
 	static function unmuted($url=false)
 	{
 		$buf = '';
-		if($url) $buf .= '<a href="'.$url.'">';
+		if($url) $buf .= '<a onclick="return confirm(\''.l_t("Are you sure you want to mute the messages from this player?").'\');" href="'.$url.'">';
 		$buf .= '<img src="'.l_s('images/icons/unmute.png').'" alt="'.l_t('Mute player').'" title="'.l_t('Mute player').'" />';
 		if($url) $buf .= '</a>';
 		return $buf;
@@ -268,9 +268,10 @@ class libHTML
 	 * @param $actionName The name of the action
 	 * @param array $args The args in a $name=>$value array
 	 * @param $linkName The name to give the link, the URL is returned if no linkName is given
+	 * @param $confirm Boolean to determine whether the action needs javascript confirmation
 	 * @return string A link URL or an <a href>
 	 */
-	static function admincp($actionName, $args=null, $linkName=null)
+	static function admincp($actionName, $args=null, $linkName=null,$confirm=false)
 	{
 		$output = 'admincp.php?tab=Control%20Panel&amp;actionName='.$actionName;
 
@@ -290,7 +291,9 @@ class libHTML
 		$output .= '#'.$actionName;
 
 		if($linkName)
-			return '<a href="'.$output.'" class="light">'.$linkName.'</a>';
+			return '<a href="'.$output.'" '
+			      .($confirm ? 'onclick="return confirm(\''.$linkName.': '.l_t('Please confirm this action.').'\')"' :'')
+			      .' class="light">'.$linkName.'</a>';
 		else
 			return $output;
 	}
@@ -389,10 +392,11 @@ class libHTML
 		<meta name="keywords" content="'.l_t('diplomacy,diplomacy game,online diplomacy,classic diplomacy,web diplomacy,diplomacy board game,play diplomacy,php diplomacy').'" />
 		<link rel="shortcut icon" href="'.STATICSRV.l_s('favicon.ico').'" />
 		<link rel="icon" href="'.STATICSRV.l_s('favicon.ico').'" />
-		<link rel="stylesheet" href="'.CSSDIR.l_s('/global.css').'" type="text/css" />
+		<link rel="stylesheet" href="'.CSSDIR.l_s('/global.css?ver=1').'" type="text/css" />
 		<link rel="stylesheet" href="'.CSSDIR.l_s('/gamepanel.css').'" type="text/css" />
 		<link rel="stylesheet" href="'.CSSDIR.l_s('/home.css').'" type="text/css" />
 		'.$variantCSS.'
+		<script type="text/javascript" src="useroptions.php"></script>
 		<script type="text/javascript" src="'.STATICSRV.l_j('contrib/js/prototype.js').'"></script>
 		<script type="text/javascript" src="'.STATICSRV.l_j('contrib/js/scriptaculous.js').'"></script>
 		<link rel="stylesheet" type="text/css" href="'.STATICSRV.l_s('contrib/js/pushup/src/css/pushup.css').'" />
@@ -480,7 +484,7 @@ class libHTML
 			$notice[]=Config::$serverMessages['Panic'];
 		}
 
-		if ( $Misc->Notice )
+		if ( $Misc->Notice || Config::$isBeta )
 			$notice[] = Config::$serverMessages['Notice'];
 
 		if ( ( time() - $Misc->LastProcessTime ) > Config::$downtimeTriggerMinutes*60 )
@@ -512,7 +516,7 @@ class libHTML
 			FROM wD_Members m
 			INNER JOIN wD_Games g ON ( m.gameID = g.id )
 			WHERE m.userID = ".$User->id." AND ( m.status='Playing' OR m.status='Left' )
-				AND ( ( NOT m.orderStatus LIKE '%Ready%' AND NOT m.orderStatus LIKE '%None%' ) OR NOT ( (m.newMessagesFrom+0) = 0 ) )");
+				AND ( ( NOT m.orderStatus LIKE '%Ready%' AND NOT m.orderStatus LIKE '%None%' ) OR NOT ( (m.newMessagesFrom+0) = 0 ) ) ORDER BY  g.processStatus ASC, g.processTime ASC");
 
 		$gameIDs = array();
 		$notifyGames = array();
@@ -522,8 +526,6 @@ class libHTML
 			$gameIDs[] = $id;
 			$notifyGames[$id] = $game;
 		}
-
-		sort($gameIDs);
 
 		$gameNotifyBlock = '';
 
@@ -603,6 +605,7 @@ class libHTML
 		$links['map.php']=array('name'=>'Map', 'inmenu'=>FALSE);
 		$links['faq.php']=array('name'=>'FAQ', 'inmenu'=>FALSE);
 		$links['rules.php']=array('name'=>'Rules', 'inmenu'=>FALSE);
+		$links['recentchanges.php']=array('name'=>'Recent changes', 'inmenu'=>FALSE);
 		$links['intro.php']=array('name'=>'Intro', 'inmenu'=>FALSE);
 		$links['credits.php']=array('name'=>'Credits', 'inmenu'=>FALSE);
 		$links['board.php']=array('name'=>'Board', 'inmenu'=>FALSE);
@@ -617,8 +620,10 @@ class libHTML
 		if ( is_object($User) )
 		{
 			if ( $User->type['Admin'] or $User->type['Moderator'] )
+			{
+				$links['profile.php']=array('name'=>'Find user', 'inmenu'=>true);  // Overrides the previous one with one that appears in the menu
 				$links['admincp.php']=array('name'=>'Admin CP', 'inmenu'=>true);
-
+			}
 			$links['gamemaster.php']=array('name'=>'GameMaster', 'inmenu'=>FALSE);
 		}
 
@@ -843,10 +848,8 @@ class libHTML
 	static private function footerCopyright() {
 		// Version, sourceforge and HTML compliance logos
 		return l_t('webDiplomacy version <strong>%s</strong>',number_format(VERSION/100,2)).'<br />
-			<a href="http://sourceforge.net/projects/phpdiplomacy">
-				<img alt="webDiplomacy @ Sourceforge"
-					src="http://sourceforge.net/sflogo.php?group_id=125692" />
-			</a>';
+			<a href="http://github.com/kestasjk/webDiplomacy" class="light">GitHub Project</a> | 
+			<a href="http://github.com/kestasjk/webDiplomacy/issues" class="light">Bug reports</a>';
 	}
 
 	/*
@@ -884,6 +887,8 @@ class libHTML
 	
 	static private function footerScripts() {
 		global $User, $Locale;
+
+		$jsVersion = 3;  // increment this to force clients to reload their JS files
 
 		$buf = '';
 
@@ -934,11 +939,12 @@ class libHTML
 		$footerIncludes[] = l_j('utility.js');
 		$footerIncludes[] = l_j('cacheUpdate.js');
 		$footerIncludes[] = l_j('timeHandler.js');
-		$footerIncludes[] = l_j('forum.js');
+		$footerIncludes[] = l_j('forum.js');          
+		$footerIncludes[] = l_j('Color.Vision.Daltonize.js');
 		
 		// Don't localize all the footer includes here, as some of them may be dynamically generated
 		foreach( array_merge($footerIncludes,self::$footerIncludes) as $includeJS ) // Add on the dynamically added includes
-			$buf .= '<script type="text/javascript" src="'.STATICSRV.JSDIR.'/'.$includeJS.'"></script>';
+			$buf .= '<script type="text/javascript" src="'.STATICSRV.JSDIR.'/'.$includeJS.'?ver='.$jsVersion.'"></script>';
 
 		// Utility (error detection, message protection), HTML post-processing,
 		// time handling functions. Only logged-in users need to run these

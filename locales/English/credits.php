@@ -36,7 +36,25 @@ $credits = array(
 	')
 
 	,array('<a href="http://kestas.kuliukas.com/">Kestas Kuliukas</a>
-	','Creator &amp; developer')
+	','Creator &amp; developer, and Co-Owner')
+	
+	,array('<a href="http://www.webdiplomacy.net/profile.php?userID=33599">Zultar</a>
+	','Co-Owner')
+	
+	,array('<a href="http://www.webdiplomacy.net/profile.php?userID=15658">jmo1121109</a>,
+	<a href="http://www.webdiplomacy.net/profile.php?userID=37127">2ndWhiteLine</a>,
+	<a href="http://www.webdiplomacy.net/profile.php?userID=48609">TheMinisterOfWar</a>,
+	<a href="http://www.webdiplomacy.net/profile.php?userID=8938">damian</a>,
+	<a href="http://www.webdiplomacy.net/profile.php?userID=23172">Hellenic Riot</a>,
+       <a href="http://www.webdiplomacy.net/profile.php?userID=37168">ghug</a>,^M
+       <a href="http://www.webdiplomacy.net/profile.php?userID=41379">captainmeme</a>,
+	','The Current WebDiplomacy Moderators, reachable at webdipmod@gmail.com')
+	
+	,array('<a href="http://www.webdiplomacy.net/profile.php?userID=54909">A_Tin_Can</a>
+	','Coding Updates and Site Improvements')
+	
+	,array('<a href="http://www.webdiplomacy.net/profile.php?userID=4946">abgemacht</a>
+	','Maintaining the <a href="https://www.google.com/maps/d/u/0/viewer?mid=zkz1OHicklqk.ky67Va8gNVi0">webDiplomacy Player Map (external link)</a>, pm him your city to get your location added to the map.')
 
 	,array('Unknown
 	','Tank + Battleship icons<br />
@@ -71,16 +89,16 @@ $credits = array(
 	','SVG map developer, coast fix patch')
 
 	,array('<a href="http://sourceforge.net/users/fallingrock/">Chris Hughes</a>
-	','webDiplomacy Facebook dev, variable game phase lengths, gamelistings pagination')
+	','webDiplomacy Facebook dev, variable game phase lengths, game listings pagination')
 
 	,array('<a href="http://www.webdiplomacy.net/profile.php?userID=3013">thewonderllama</a>
 	','Unit placement orders fix, designing and running the GFDT tournaments')
 
 	,array('Chrispminis, figlesquidge, dangermouse, thewonderllama, TheGhostMaker
-	','Tireless webdiplomacy.net moderators, wrote the list of rules')
+	','Retired webdiplomacy.net moderators, wrote the list of rules')
 
-	,array('TheGhostMaker
-	','Designing and running the Ghost-rating system, helping with the GFDT, home page mock-up')
+	,array('TheGhostMaker and Alderian
+	','Designing and running the <a href="http://tournaments.webdiplomacy.net/theghost-ratingslist">ghostrating</a> system, helping with the GFDT, home page mock-up')
 
 	,array('jayp
 	','Many new features for 0.91, regarding extra game settings. Multi-variant code developer')

@@ -286,7 +286,7 @@ class processGame extends Game
 	 *
 	 * @return Game The object corresponding to the new game
 	 */
-	public static function create($variantID, $name, $password, $bet, $potType, $phaseMinutes, $joinPeriod, $anon, $press, $missingPlayerPolicy='Normal')
+	public static function create($variantID, $name, $password, $bet, $potType, $phaseMinutes, $joinPeriod, $anon, $press, $missingPlayerPolicy='Normal', $drawType, $rrLimit)
 	{
 		global $DB;
 
@@ -325,7 +325,8 @@ class processGame extends Game
 						".( $password ? "password = UNHEX('".md5($password)."')," : "").
 						"processTime = ".$pTime.",
 						phaseMinutes = ".$phaseMinutes.",
-						missingPlayerPolicy = '".$missingPlayerPolicy."'");
+						missingPlayerPolicy = '".$missingPlayerPolicy."',
+						drawType='$drawType', minimumReliabilityRating=$rrLimit");
 
 		$gameID = $DB->last_inserted();
 
@@ -407,6 +408,38 @@ class processGame extends Game
 	}
 
 	/**
+	 * Record NMRs by entering any NMRs into wD_NMRs, and also increment the phaseCount for all users in the game.
+	 */
+	private function recordNMRs()
+	{
+		global $DB;
+		
+		/*
+		 * Make a note of NMRs. An NMR is where a member's orderStatus does not contain "Saved", but there are orders to
+		* be submitted and the user is playing. (Note this could be changed to require orderStatus is "Completed", if
+				* incomplete orders don't count as moves.)
+		*/
+		$DB->sql_put("INSERT INTO wD_NMRs (gameID, userID, countryID, turn, bet, SCCount)
+				SELECT m.gameID, m.userID, m.countryID, ".$this->turn." as turn, m.bet, m.supplyCenterNo
+				FROM wD_Members m
+				WHERE m.gameID = ".$this->id." 
+					AND ( m.status='Playing' OR m.status='Left' ) 
+					AND EXISTS(SELECT o.id FROM wD_Orders o WHERE o.gameID = m.gameID AND o.countryID = m.countryID)
+					AND NOT m.orderStatus LIKE '%Saved%' AND NOT m.orderStatus LIKE '%Ready%'");
+		
+		/*
+		 * Increment the moves received counter for users who could have submitted moves. This is a counter because it's a large number
+		 * users are unlikely to question, and calculating it from stored data is very involved.
+		*/
+		$DB->sql_put("UPDATE wD_Users u
+				INNER JOIN wD_Members m ON m.userID = u.id
+				SET u.phaseCount = u.phaseCount + 1
+				WHERE m.gameID = ".$this->id." 
+					AND ( m.status='Playing' OR m.status='Left' )
+					AND EXISTS(SELECT o.id FROM wD_Orders o WHERE o.gameID = m.gameID AND o.countryID = m.countryID)");
+		}
+	
+	/**
 	 * Process; the main gamemaster function for managing games; processes orders, adjudicates them,
 	 * applies the results, creates new orders, updates supply center/army numbers, and moves the
 	 * game onto the next phase (or updates it as won)
@@ -430,6 +463,7 @@ class processGame extends Game
 		/*
 		 * Process the game. In a nutshell:
 		 *
+		 * - Make a note of any NMRs, increment phases played
 		 * - Adjudicate
 		 * 		- Save the current state of the game (Units,Orders,TerrStatus) to the archives if we have entered a new turn
 		 * 		- Wipe the game's orders
@@ -439,6 +473,8 @@ class processGame extends Game
 		 * - Create new orders for the current phase
 		 * - Set the next date for game processing
 		 */
+		
+		$this->recordNMRs();
 
 		/*
 		 * Except for wiping redundant TerrStatus data after a new turn and generating new orders
@@ -541,11 +577,12 @@ class processGame extends Game
 						SET m.orderStatus=IF(o.id IS NULL, 'None',''),
 							missedPhases=IF(m.status='Playing' AND NOT o.id IS NULL, missedPhases + 1, missedPhases)
 						WHERE m.gameID = ".$this->id);
-
+			
 			$this->processTime = time() + $this->phaseMinutes*60;
 
 			$DB->sql_put("UPDATE wD_Games SET processTime = ".$this->processTime." WHERE id = ".$this->id);
 		}
+		$this->Members->updateReliabilityStats();
 	}
 
 	/**

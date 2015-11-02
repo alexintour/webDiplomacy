@@ -98,6 +98,7 @@ class panelGameHome extends panelGameBoard
 	 */
 	function titleBar()
 	{
+		global $User;
 		$buf = '
 			<div class="titleBarRightSide">
 				<span class="gameTimeRemaining">'.$this->gameTimeRemaining().'</span>
@@ -122,6 +123,15 @@ class panelGameHome extends panelGameBoard
 			$alternatives[]=l_t('Public chat');
 		if( $this->anon=='Yes' )
 			$alternatives[]=l_t('Anon');
+		if( $this->drawType=='draw-votes-hidden')
+			$alternatives[]=l_t('Hidden draw votes');
+
+		if( $this->minimumReliabilityRating > 0) 
+		{
+			$alternatives[]= l_t('<span class="%s">RR%s%%</span>',
+			($User->reliabilityRating < $this->minimumReliabilityRating ? 'Austria' :''), 
+			($this->minimumReliabilityRating));
+		}
 
 		if ( $alternatives )
 			$buf .= '
@@ -148,20 +158,23 @@ class panelGameHome extends panelGameBoard
 	 * @return string
 	 */
 	function links()
-	{
+	{	
+		$watchString= '';	
+		if ($this->watched())
+		{
+			$watchString = '- <a href="board.php?gameID='.$this->id.'&unwatch">'.l_t('Stop spectating').'</a>';
+		}		
+				
 		if( $this->phase == 'Pre-game')
 		{
-			return '<div class="bar homeGameLinks barAlt'.libHTML::alternate().'">
+			return '<div class="bar homeGameLinks barAlt1">
 				<a href="board.php?gameID='.$this->id.'">'.l_t('Open').'</a>
-				</div>';
+				'.$watchString.'</div>';
 		}
 		else
 			return '<div class="bar homeGameLinks barAlt'.libHTML::alternate().'">
-				<a href="board.php?gameID='.$this->id.'#gamePanel">'.l_t('Open').'</a> -
-				<a href="board.php?gameID='.$this->id.'#chatbox">'.l_t('Chatbox').'</a> -
-				<a href="board.php?gameID='.$this->id.'#orders">'.l_t('Orders').'</a> -
-				<a href="board.php?gameID='.$this->id.'#details">'.l_t('Details').'</a>
-				</div>';
+				<a href="board.php?gameID='.$this->id.'#gamePanel">'.l_t('Open').'</a> 
+				'.$watchString.'</div>';
 	}
 
 }

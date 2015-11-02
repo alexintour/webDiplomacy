@@ -115,6 +115,13 @@ class Chatbox
 			elseif( $User->type['Moderator'] )
 				libGameMessage::send(0, 0, '('.$User->username.'): '.$newmessage);
 		}
+		
+		if( isset($_REQUEST['MarkAsUnread']) )
+		{
+			$DB->sql_put("UPDATE wD_Members SET newMessagesFrom = IF( (newMessagesFrom+0) = 0,'".$msgCountryID."', CONCAT_WS(',',newMessagesFrom,'".$msgCountryID."') )
+						WHERE gameID = ".$Game->id." AND countryID=".$Member->countryID);
+			$Member->newMessagesFrom[]=$msgCountryID;
+		}
 	}
 
 	/**
@@ -186,17 +193,30 @@ class Chatbox
 		             ( $Game->pressType == 'NoPress' && $Game->phase == 'Finished' )))))) // finished nopress.
 		{
 			$chatbox .= '<DIV class="chatbox"><TABLE>
-					<TR class="barAlt2">
 					<form method="post" class="safeForm" action="board.php?gameID='.$Game->id.'&amp;msgCountryID='.$msgCountryID.'">
+					<TR class="barAlt2">
+						<TD class="left">
+						'.(($msgCountryID == 0) ? '' : '
+							<a href="#" onclick="document.markUnread.submit(); return false;" tabindex="3">Mark unread</a>
+						').'
+						</TD>
+						<TD class="right" rowspan="2">
+							<TEXTAREA id="sendbox" tabindex="1" NAME="newmessage" style="width:98% !important" width="100%" ROWS="5"></TEXTAREA>
+						</TD>
+					</TR>
+					<TR class="barAlt2">
 						<TD class="left send">
 							<input type="hidden" name="formTicket" value="'.libHTML::formTicket().'" />
-							<input type="submit" tabindex="2" class="form-submit" value="'.l_t('Send').'" name="Send" />
+							<input type="submit" tabindex="2" class="form-submit" value="'.l_t('Send').'" name="Send" /><br/>
 						</TD>
-						<TD class="right">
-							<TEXTAREA id="sendbox" tabindex="1" NAME="newmessage" style="width:98% !important" width="100%" ROWS="3"></TEXTAREA>
-						</TD>
-					</form>
 					</TR>
+					</form>
+					'. // Mark as unread Patch:
+					(($msgCountryID == 0) ? '' : '
+						<form method="post" name="markUnread" class="safeForm" action="board.php?gameID='.$Game->id.'&amp;msgCountryID='.$msgCountryID.'#chatboxanchor">
+							<input type="hidden" tabindex="2" value="" name="MarkAsUnread" />
+						</form>
+					').'
 				</TABLE></DIV>';
 		}
 
@@ -235,29 +255,32 @@ class Chatbox
 			// Do not allow country specific tabs for restricted press games.
 			if ($Game->pressType != 'Regular' && $countryID != 0 && $countryID != $Member->countryID ) continue;
 
+
 			$tabs .= ' <a href="./board.php?gameID='.$Game->id.'&amp;msgCountryID='.$countryID.'&amp;rand='.rand(1,100000).'#chatboxanchor" '.
 				'class="country'.$countryID.' '.( $msgCountryID == $countryID ? 'current"'
 					: '" title="'.l_t('Open %s chatbox tab"',( $countryID == 0 ? 'the global' : $this->countryName($countryID)."'s" )) ).'>';
 
+			// Do we display a new messages icon?
+            $newMessages = '';
+			if (( $msgCountryID != $countryID and in_array($countryID, $Member->newMessagesFrom) )
+			 	|| ( $msgCountryID == $countryID and isset($_REQUEST['MarkAsUnread'])))
+			{
+				$newMessages = ' '. libHTML::unreadMessages();
+			}
+
 			if ( $countryID == $Member->countryID )
 			{
-				$tabs .= l_t('Notes');
+				$tabs .= '<span>'.l_t('Notes') . $newMessages .'</span>';
 			}
 			elseif(isset($Game->Members->ByCountryID[$countryID]))
 			{
-				$tabs .= $Game->Members->ByCountryID[$countryID]->memberCountryName();
 				if ( $Game->Members->ByCountryID[$countryID]->online && !$Game->Members->ByCountryID[$countryID]->isNameHidden() )
-					$tabs .= ' '.libHTML::loggedOn($Game->Members->ByCountryID[$countryID]->userID);
+					$newMessages = ' '. libHTML::loggedOn($Game->Members->ByCountryID[$countryID]->userID) . $newMessages; 
+				$tabs .= $Game->Members->ByCountryID[$countryID]->memberCountryName($newMessages);
 			}
 			else
 			{
-				$tabs .= l_t('Global');
-			}
-
-			if ( $msgCountryID != $countryID and in_array($countryID, $Member->newMessagesFrom) )
-			{
-				// This isn't the tab I am currently viewing, and it has sent me new messages
-				$tabs .= ' '.libHTML::unreadMessages();
+				$tabs .= '<span>'. l_t('Global') .$newMessages. '</span>';
 			}
 
 			$tabs .= '</a>';
@@ -396,6 +419,15 @@ class Chatbox
 
 			if( is_object($Member) && $message['fromCountryID'] == $Member->countryID )
 				$message['message'] = '<span class="messageFromMe">'.$message['message'].'</span>';
+
+			// Display the country name in front of the text (for colorblind people)
+			if ( $User->options->value['colourblind'] != 'No')
+			{
+				if(isset($Member) && $Member->countryID == $message['fromCountryID'])
+					$messagestxt .=  '<strong>You:</strong> ';
+				elseif( $message['fromCountryID'] != 0 )
+					$messagestxt .=  '<strong>'.$this->countryName($message['fromCountryID']).':</strong> ';
+			}
 
 			$messagestxt .= $message['message'].
 					'</TD>

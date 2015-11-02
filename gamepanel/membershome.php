@@ -94,7 +94,7 @@ class panelMembersHome extends panelMembers
 				$remainingPlayers--;
 				$remainingWidth -= $width;
 
-				$rowBuf .= '<td style="width:'.$width.'%" class="barAlt'.libHTML::alternate().'">'.$data[$i].'</td>';
+				$rowBuf .= '<td style="width:'.$width.'%" class="">'.$data[$i].'</td>';
 			}
 			libHTML::alternate();
 			if($dataPresent)
