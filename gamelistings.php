@@ -249,15 +249,15 @@ else
 	print '</br><div class = "gameCreateShow">
 			<FORM class="advancedSearch" method="get" action="gamelistings.php#results">
 			<INPUT type="hidden" name="gamelistType" value="Search" />
-			<p><strong>Game Status:<select class="gameCreate" name="status">
-				<option'.(($_REQUEST['status']=='All') ? ' selected="selected"' : '').' value="All">All</option>
-				<option'.(($_REQUEST['status']=='Pre-game') ? ' selected="selected"' : '').' value="Pre-game">Pre-Game</option>
-				<option'.(($_REQUEST['status']=='Active') ? ' selected="selected"' : '').' value="Active">All Active</option>
-				<option'.(($_REQUEST['status']=='Paused') ? ' selected="selected"' : '').' value="Paused">Paused</option>
-				<option'.(($_REQUEST['status']=='Running') ? ' selected="selected"' : '').' value="Running">Running (excludes paused games)</option>
-				<option'.(($_REQUEST['status']=='Finished') ? ' selected="selected"' : '').' value="Finished">All Finished</option>
-				<option'.(($_REQUEST['status']=='Won') ? ' selected="selected"' : '').' value="Won">Won</option>
-				<option'.(($_REQUEST['status']=='Drawn') ? ' selected="selected"' : '').' value="Drawn">Drawn</option>
+			<p><strong>'.l_t('Game Status').':<select class="gameCreate" name="status">
+				<option'.(($_REQUEST['status']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>
+				<option'.(($_REQUEST['status']=='Pre-game') ? ' selected="selected"' : '').' value="Pre-game">'.l_t('Pre-Game').'</option>
+				<option'.(($_REQUEST['status']=='Active') ? ' selected="selected"' : '').' value="Active">'.l_t('All Active').'</option>
+				<option'.(($_REQUEST['status']=='Paused') ? ' selected="selected"' : '').' value="Paused">'.l_t('Paused').'</option>
+				<option'.(($_REQUEST['status']=='Running') ? ' selected="selected"' : '').' value="Running">'.l_t('Running (excludes paused games)').'</option>
+				<option'.(($_REQUEST['status']=='Finished') ? ' selected="selected"' : '').' value="Finished">'.l_t('All Finished').'</option>
+				<option'.(($_REQUEST['status']=='Won') ? ' selected="selected"' : '').' value="Won">'.l_t('Won').'</option>
+				<option'.(($_REQUEST['status']=='Drawn') ? ' selected="selected"' : '').' value="Drawn">'.l_t('Drawn').'</option>
 			</select></p>';
 			if (isset($_REQUEST['userID']))
 			{
@@ -269,15 +269,15 @@ else
 			}
 			else
 			{
-				print '<p>My Games: <select class="gameCreate" name="userGames">
-					<option'.(($_REQUEST['userGames']=='All') ? ' selected="selected"' : '').' value="All">All Games</option>
-					<option'.(($_REQUEST['userGames']=='include') ? ' selected="selected"' : '').' value="include">My Games</option>
+				print '<p>'.l_t('My Games').': <select class="gameCreate" name="userGames">
+					<option'.(($_REQUEST['userGames']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All Games').'</option>
+					<option'.(($_REQUEST['userGames']=='include') ? ' selected="selected"' : '').' value="include">'.l_t('My Games').'</option>
 				</select></p>';
 			}
 			if (isset($_REQUEST['tournamentID']))
 			{
-				print '<p>Round: <select class="gameCreate" name="round">
-					<option'.(($_REQUEST['round']=='All') ? ' selected="selected"' : '').' value="All">All</option>';
+				print '<p>'.l_t('Round').': <select class="gameCreate" name="round">
+					<option'.(($_REQUEST['round']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>';
 					for($i = 1; $i <= $tournamentRounds; $i++)
 					{
 						print '<option'.(($_REQUEST['round']== $i) ? ' selected="selected"' : '').' value="'.$i.'">'.$i.'</option>';
@@ -286,113 +286,113 @@ else
 			}
 			else
 			{
-				print '<p>Joinable Games: <select class="gameCreate" name="seeJoinable">
-					<option'.(($_REQUEST['seeJoinable']=='All') ? ' selected="selected"' : '').' value="All">All Games</option>
-					<option'.(($_REQUEST['seeJoinable']=='yes') ? ' selected="selected"' : '').' value="yes">All Joinable Games</option>
-					<option'.(($_REQUEST['seeJoinable']=='active') ? ' selected="selected"' : '').' value="active">Active Joinable Games Only</option>
-					<option'.(($_REQUEST['seeJoinable']=='new') ? ' selected="selected"' : '').' value="new">New Joinable Games Only</option>
+				print '<p>'.l_t('Joinable Games').': <select class="gameCreate" name="seeJoinable">
+					<option'.(($_REQUEST['seeJoinable']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All Games').'</option>
+					<option'.(($_REQUEST['seeJoinable']=='yes') ? ' selected="selected"' : '').' value="yes">'.l_t('All Joinable Games').'</option>
+					<option'.(($_REQUEST['seeJoinable']=='active') ? ' selected="selected"' : '').' value="active">'.l_t('Active Joinable Games Only').'</option>
+					<option'.(($_REQUEST['seeJoinable']=='new') ? ' selected="selected"' : '').' value="new">'.l_t('New Joinable Games Only').'</option>
 				</select></p>';
 			}
-			print '<p>Privacy: <select class="gameCreate" name="privacy">
-				<option'.(($_REQUEST['privacy']=='All') ? ' selected="selected"' : '').' value="All">All</option>
-				<option'.(($_REQUEST['privacy']=='private') ? ' selected="selected"' : '').' value="private">Private</option>
-				<option'.(($_REQUEST['privacy']=='public') ? ' selected="selected"' : '').' value="public">Public</option>
+			print '<p>'.l_t('Privacy').': <select class="gameCreate" name="privacy">
+				<option'.(($_REQUEST['privacy']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>
+				<option'.(($_REQUEST['privacy']=='private') ? ' selected="selected"' : '').' value="private">'.l_t('Private').'</option>
+				<option'.(($_REQUEST['privacy']=='public') ? ' selected="selected"' : '').' value="public">'.l_t('Public').'</option>
 			</select></p>
-			<p>Scoring: <select class="gameCreate" name="potType">
-				<option'.(($_REQUEST['potType']=='All') ? ' selected="selected"' : '').' value="All">All</option>
-				<option'.(($_REQUEST['potType']=='dss') ? ' selected="selected"' : '').' value="dss">Draw Size Scoring</option>
-				<option'.(($_REQUEST['potType']=='sos') ? ' selected="selected"' : '').' value="sos">Sum of Squares</option>
-				<option'.(($_REQUEST['potType']=='ppsc') ? ' selected="selected"' : '').' value="ppsc">Points Per Supply Center</option>
-				<option'.(($_REQUEST['potType']=='unranked') ? ' selected="selected"' : '').' value="unranked">Unranked</option>
+			<p>'.l_t('Scoring').': <select class="gameCreate" name="potType">
+				<option'.(($_REQUEST['potType']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>
+				<option'.(($_REQUEST['potType']=='dss') ? ' selected="selected"' : '').' value="dss">'.l_t('Draw Size Scoring').'</option>
+				<option'.(($_REQUEST['potType']=='sos') ? ' selected="selected"' : '').' value="sos">'.l_t('Sum of Squares').'</option>
+				<option'.(($_REQUEST['potType']=='ppsc') ? ' selected="selected"' : '').' value="ppsc">'.l_t('Points Per Supply Center').'</option>
+				<option'.(($_REQUEST['potType']=='unranked') ? ' selected="selected"' : '').' value="unranked">'.l_t('Unranked').'</option>
 			</select></p>
-			<p>Draw Votes: <select class="gameCreate" name="drawVotes">
-				<option'.(($_REQUEST['drawVotes']=='All') ? ' selected="selected"' : '').' value="All">All</option>
-				<option'.(($_REQUEST['drawVotes']=='hidden') ? ' selected="selected"' : '').' value="hidden">Hidden Votes</option>
-				<option'.(($_REQUEST['drawVotes']=='public') ? ' selected="selected"' : '').' value="public">Public Votes</option>
+			<p>'.l_t('Draw Votes').': <select class="gameCreate" name="drawVotes">
+				<option'.(($_REQUEST['drawVotes']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>
+				<option'.(($_REQUEST['drawVotes']=='hidden') ? ' selected="selected"' : '').' value="hidden">'.l_t('Hidden Votes').'</option>
+				<option'.(($_REQUEST['drawVotes']=='public') ? ' selected="selected"' : '').' value="public">'.l_t('Public Votes').'</option>
 			</select></p>
-			<p>Variant: <select class="gameCreate" name="variant">
-				<option'.(($_REQUEST['variant']=='All') ? ' selected="selected"' : '').' value="All">All</option>';
+			<p>'.l_t('Variant').': <select class="gameCreate" name="variant">
+				<option'.(($_REQUEST['variant']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>';
 			foreach (Config::$variants as $variantID=>$variantName)
 			{
-				if($variantID != 57) {print '<option'.(($_REQUEST['variant']==$variantName) ? ' selected="selected"' : '').' value='.$variantName.'>'.$variantName.'</option>';}
+				if($variantID != 57) {print '<option'.(($_REQUEST['variant']==$variantName) ? ' selected="selected"' : '').' value='.$variantName.'>'.l_t($variantName).'</option>';}
 			}
 			print '</select></p>
-			<p>Excused Missing Turns: <select class="gameCreate" name="excusedTurns">
-				<option'.(($_REQUEST['excusedTurns']=='All') ? ' selected="selected"' : '').' value="All">All</option>
+			<p>'.l_t('Excused Missing Turns').': <select class="gameCreate" name="excusedTurns">
+				<option'.(($_REQUEST['excusedTurns']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>
 				<option'.(($_REQUEST['excusedTurns']=='0') ? ' selected="selected"' : '').' value="0">0</option>
 				<option'.(($_REQUEST['excusedTurns']=='1') ? ' selected="selected"' : '').' value="1">1</option>
 				<option'.(($_REQUEST['excusedTurns']=='2') ? ' selected="selected"' : '').' value="2">2</option>
 				<option'.(($_REQUEST['excusedTurns']=='3') ? ' selected="selected"' : '').' value="3">3</option>
 				<option'.(($_REQUEST['excusedTurns']=='4') ? ' selected="selected"' : '').' value="4">4</option>
 			</select></p>
-			<p>Anonymity: <select class="gameCreate" name="anonymity">
-						<option'.(($_REQUEST['anonymity']=='All') ? ' selected="selected"' : '').' value="All">All</option>
-						<option'.(($_REQUEST['anonymity']=='yes') ? ' selected="selected"' : '').' value="yes">Anonymous</option>
-						<option'.(($_REQUEST['anonymity']=='no') ? ' selected="selected"' : '').' value="no">Non-Anonymous</option>
+			<p>'.l_t('Anonymity').': <select class="gameCreate" name="anonymity">
+						<option'.(($_REQUEST['anonymity']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('All').'</option>
+						<option'.(($_REQUEST['anonymity']=='yes') ? ' selected="selected"' : '').' value="yes">'.l_t('Anonymous').'</option>
+						<option'.(($_REQUEST['anonymity']=='no') ? ' selected="selected"' : '').' value="no">'.l_t('Non-Anonymous').'</option>
 					</select></p>
-			<p>Phase Length From <select class="gameCreate" name="phaseLengthMin">
-				<option'.(($_REQUEST['phaseLengthMin']=='All') ? ' selected="selected"' : '').' value="All">5 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='7m') ? ' selected="selected"' : '').' value="7m">7 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='10m') ? ' selected="selected"' : '').' value="10m">10 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='15m') ? ' selected="selected"' : '').' value="15m">15 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='20m') ? ' selected="selected"' : '').' value="20m">20 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='30m') ? ' selected="selected"' : '').' value="30m">30 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='1h') ? ' selected="selected"' : '').' value="1h">1 Hour</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='2h') ? ' selected="selected"' : '').' value="2h">2 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='4h') ? ' selected="selected"' : '').' value="4h">4 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='6h') ? ' selected="selected"' : '').' value="6h">6 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='8h') ? ' selected="selected"' : '').' value="8h">8 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='10h') ? ' selected="selected"' : '').' value="10h">10 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='12h') ? ' selected="selected"' : '').' value="12h">12 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='14h') ? ' selected="selected"' : '').' value="14h">14 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='16h') ? ' selected="selected"' : '').' value="16h">16 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='18h') ? ' selected="selected"' : '').' value="18h">18 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='20h') ? ' selected="selected"' : '').' value="20h">20 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='22h') ? ' selected="selected"' : '').' value="22h">22 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='1d') ? ' selected="selected"' : '').' value="1d">1 Day</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='1d1h') ? ' selected="selected"' : '').' value="1d1h">1 Day 1 Hour</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='1d12h') ? ' selected="selected"' : '').' value="1d12h">1 Day 12 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='2d') ? ' selected="selected"' : '').' value="2d">2 Days</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='2d2h') ? ' selected="selected"' : '').' value="2d2h">2 Days 2 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='3d') ? ' selected="selected"' : '').' value="3d">3 Days</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='4d') ? ' selected="selected"' : '').' value="4d">4 Days</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='5d') ? ' selected="selected"' : '').' value="5d">5 Days</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='6d') ? ' selected="selected"' : '').' value="6d">6 Days</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='7d') ? ' selected="selected"' : '').' value="7d">7 Days</option>
-				<option'.(($_REQUEST['phaseLengthMin']=='10d') ? ' selected="selected"' : '').' value="10d">10 Days</option>
+			<p>'.l_t('Phase Length').' '.l_t('From').' <select class="gameCreate" name="phaseLengthMin">
+				<option'.(($_REQUEST['phaseLengthMin']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('5 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='7m') ? ' selected="selected"' : '').' value="7m">'.l_t('7 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='10m') ? ' selected="selected"' : '').' value="10m">'.l_t('10 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='15m') ? ' selected="selected"' : '').' value="15m">'.l_t('15 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='20m') ? ' selected="selected"' : '').' value="20m">'.l_t('20 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='30m') ? ' selected="selected"' : '').' value="30m">'.l_t('30 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='1h') ? ' selected="selected"' : '').' value="1h">'.l_t('1 Hour').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='2h') ? ' selected="selected"' : '').' value="2h">'.l_t('2 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='4h') ? ' selected="selected"' : '').' value="4h">'.l_t('4 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='6h') ? ' selected="selected"' : '').' value="6h">'.l_t('6 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='8h') ? ' selected="selected"' : '').' value="8h">'.l_t('8 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='10h') ? ' selected="selected"' : '').' value="10h">'.l_t('10 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='12h') ? ' selected="selected"' : '').' value="12h">'.l_t('12 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='14h') ? ' selected="selected"' : '').' value="14h">'.l_t('14 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='16h') ? ' selected="selected"' : '').' value="16h">'.l_t('16 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='18h') ? ' selected="selected"' : '').' value="18h">'.l_t('18 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='20h') ? ' selected="selected"' : '').' value="20h">'.l_t('20 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='22h') ? ' selected="selected"' : '').' value="22h">'.l_t('22 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='1d') ? ' selected="selected"' : '').' value="1d">'.l_t('1 Day').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='1d1h') ? ' selected="selected"' : '').' value="1d1h">'.l_t('1 Day 1 Hour').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='1d12h') ? ' selected="selected"' : '').' value="1d12h">'.l_t('1 Day 12 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='2d') ? ' selected="selected"' : '').' value="2d">'.l_t('2 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='2d2h') ? ' selected="selected"' : '').' value="2d2h">'.l_t('2 Days 2 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='3d') ? ' selected="selected"' : '').' value="3d">'.l_t('3 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='4d') ? ' selected="selected"' : '').' value="4d">'.l_t('4 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='5d') ? ' selected="selected"' : '').' value="5d">'.l_t('5 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='6d') ? ' selected="selected"' : '').' value="6d">'.l_t('6 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='7d') ? ' selected="selected"' : '').' value="7d">'.l_t('7 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMin']=='10d') ? ' selected="selected"' : '').' value="10d">'.l_t('10 Days').'</option>
 			</select>
-			To<select class="gameCreate" name="phaseLengthMax">
-				<option'.(($_REQUEST['phaseLengthMax']=='5m') ? ' selected="selected"' : '').' value="5m">5 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='7m') ? ' selected="selected"' : '').' value="7m">7 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='10m') ? ' selected="selected"' : '').' value="10m">10 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='15m') ? ' selected="selected"' : '').' value="15m">15 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='20m') ? ' selected="selected"' : '').' value="20m">20 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='30m') ? ' selected="selected"' : '').' value="30m">30 Minutes</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='1h') ? ' selected="selected"' : '').' value="1h">1 Hour</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='2h') ? ' selected="selected"' : '').' value="2h">2 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='4h') ? ' selected="selected"' : '').' value="4h">4 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='6h') ? ' selected="selected"' : '').' value="6h">6 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='8h') ? ' selected="selected"' : '').' value="8h">8 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='10h') ? ' selected="selected"' : '').' value="10h">10 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='12h') ? ' selected="selected"' : '').' value="12h">12 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='14h') ? ' selected="selected"' : '').' value="14h">14 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='16h') ? ' selected="selected"' : '').' value="16h">16 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='18h') ? ' selected="selected"' : '').' value="18h">18 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='20h') ? ' selected="selected"' : '').' value="20h">20 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='22h') ? ' selected="selected"' : '').' value="22h">22 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='1d') ? ' selected="selected"' : '').' value="1d">1 Day</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='1d1h') ? ' selected="selected"' : '').' value="1d1h">1 Day 1 Hour</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='1d12h') ? ' selected="selected"' : '').' value="1d12h">1 Day 12 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='2d') ? ' selected="selected"' : '').' value="2d">2 Days</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='2d2h') ? ' selected="selected"' : '').' value="2d2h">2 Days 2 Hours</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='3d') ? ' selected="selected"' : '').' value="3d">3 Days</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='4d') ? ' selected="selected"' : '').' value="4d">4 Days</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='5d') ? ' selected="selected"' : '').' value="5d">5 Days</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='6d') ? ' selected="selected"' : '').' value="6d">6 Days</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='7d') ? ' selected="selected"' : '').' value="7d">7 Days</option>
-				<option'.(($_REQUEST['phaseLengthMax']=='All') ? ' selected="selected"' : '').' value="All">10 Days</option>
+			'.l_t('To').'<select class="gameCreate" name="phaseLengthMax">
+				<option'.(($_REQUEST['phaseLengthMax']=='5m') ? ' selected="selected"' : '').' value="5m">'.l_t('5 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='7m') ? ' selected="selected"' : '').' value="7m">'.l_t('7 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='10m') ? ' selected="selected"' : '').' value="10m">'.l_t('10 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='15m') ? ' selected="selected"' : '').' value="15m">'.l_t('15 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='20m') ? ' selected="selected"' : '').' value="20m">'.l_t('20 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='30m') ? ' selected="selected"' : '').' value="30m">'.l_t('30 Minutes').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='1h') ? ' selected="selected"' : '').' value="1h">'.l_t('1 Hour').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='2h') ? ' selected="selected"' : '').' value="2h">'.l_t('2 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='4h') ? ' selected="selected"' : '').' value="4h">'.l_t('4 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='6h') ? ' selected="selected"' : '').' value="6h">'.l_t('6 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='8h') ? ' selected="selected"' : '').' value="8h">'.l_t('8 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='10h') ? ' selected="selected"' : '').' value="10h">'.l_t('10 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='12h') ? ' selected="selected"' : '').' value="12h">'.l_t('12 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='14h') ? ' selected="selected"' : '').' value="14h">'.l_t('14 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='16h') ? ' selected="selected"' : '').' value="16h">'.l_t('16 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='18h') ? ' selected="selected"' : '').' value="18h">'.l_t('18 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='20h') ? ' selected="selected"' : '').' value="20h">'.l_t('20 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='22h') ? ' selected="selected"' : '').' value="22h">'.l_t('22 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='1d') ? ' selected="selected"' : '').' value="1d">'.l_t('1 Day').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='1d1h') ? ' selected="selected"' : '').' value="1d1h">'.l_t('1 Day 1 Hour').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='1d12h') ? ' selected="selected"' : '').' value="1d12h">'.l_t('1 Day 12 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='2d') ? ' selected="selected"' : '').' value="2d">'.l_t('2 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='2d2h') ? ' selected="selected"' : '').' value="2d2h">'.l_t('2 Days 2 Hours').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='3d') ? ' selected="selected"' : '').' value="3d">'.l_t('3 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='4d') ? ' selected="selected"' : '').' value="4d">'.l_t('4 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='5d') ? ' selected="selected"' : '').' value="5d">'.l_t('5 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='6d') ? ' selected="selected"' : '').' value="6d">'.l_t('6 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='7d') ? ' selected="selected"' : '').' value="7d">'.l_t('7 Days').'</option>
+				<option'.(($_REQUEST['phaseLengthMax']=='All') ? ' selected="selected"' : '').' value="All">'.l_t('10 Days').'</option>
 			</select></p>
-			<p>Reliability Rating From <select class="gameCreate" name="rrMin">
+			<p>'.l_t('Reliability Rating').' '.l_t('From').' <select class="gameCreate" name="rrMin">
 				<option'.(($_REQUEST['rrMin']=='All') ? ' selected="selected"' : '').' value="All">0%</option>
 				<option'.(($_REQUEST['rrMin']=='10') ? ' selected="selected"' : '').' value="10">10%</option>
 				<option'.(($_REQUEST['rrMin']=='20') ? ' selected="selected"' : '').' value="20">20%</option>
@@ -405,7 +405,7 @@ else
 				<option'.(($_REQUEST['rrMin']=='90') ? ' selected="selected"' : '').' value="90">90%</option>
 				<option'.(($_REQUEST['rrMin']=='100') ? ' selected="selected"' : '').' value="100">100%</option>
 			</select>
-			To<select class="gameCreate" name="rrMax">
+			'.l_t('To').'<select class="gameCreate" name="rrMax">
 				<option'.(($_REQUEST['rrMax']=='0') ? ' selected="selected"' : '').' value="0">0%</option>
 				<option'.(($_REQUEST['rrMax']=='10') ? ' selected="selected"' : '').' value="10">10%</option>
 				<option'.(($_REQUEST['rrMax']=='20') ? ' selected="selected"' : '').' value="20">20%</option>
@@ -418,29 +418,29 @@ else
 				<option'.(($_REQUEST['rrMax']=='90') ? ' selected="selected"' : '').' value="90">90%</option>
 				<option'.(($_REQUEST['rrMax']=='All') ? ' selected="selected"' : '').' value="All">100%</option>
 			</select></p>
-			<p>Bet Size From <input type="number" class="gameCreate" name="betMin" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="'.((int)$_REQUEST['betMin'] ? (int)$_REQUEST['betMin'] : " ").'"/>
-			To<input type="number" class="gameCreate" name="betMax" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="'.((int)$_REQUEST['betMax'] ? (int)$_REQUEST['betMax'] : " ").'" /></p>
+			<p>'.l_t('Bet Size').' '.l_t('From').' <input type="number" class="gameCreate" name="betMin" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="'.((int)$_REQUEST['betMin'] ? (int)$_REQUEST['betMin'] : " ").'"/>
+			'.l_t('To').'<input type="number" class="gameCreate" name="betMax" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="'.((int)$_REQUEST['betMax'] ? (int)$_REQUEST['betMax'] : " ").'" /></p>
 			<p>Messaging Type: <input type="checkbox" class="gameCreate" name="messageNorm" value="Yes"'.((isset($_REQUEST['Submit']) && $_REQUEST['messageNorm'] <> "Yes") ? '' : ' checked').'>Regular
 			<input type="checkbox" class="gameCreate" name="messagePub" value="Yes"'.((isset($_REQUEST['Submit']) && $_REQUEST['messagePub'] <> "Yes") ? '' : ' checked').'>Public Only
 			<input type="checkbox" class="gameCreate" name="messageNon" value="Yes"'.((isset($_REQUEST['Submit']) && $_REQUEST['messageNon'] <> "Yes") ? '' : ' checked').'>No Messaging
 			<input type="checkbox" class="gameCreate" name="messageRule" value="Yes"'.((isset($_REQUEST['Submit']) && $_REQUEST['messageRule'] <> "Yes") ? '' : ' checked').'>Rulebook
 			</p>
-			<p>Sort By: <select  class = "gameCreate" name="sortCol">
-				<option'.(($sortCol=='id') ? ' selected="selected"' : '').' value="id">Game ID</option>
-				<option'.(($sortCol=='name') ? ' selected="selected"' : '').' value="name">Game Name</option>
-				<option'.(($sortCol=='pot') ? ' selected="selected"' : '').' value="pot">Pot Size</option>
-				<option'.(($sortCol=='minimumBet') ? ' selected="selected"' : '').' value="minimumBet">Bet</option>
-				<option'.(($sortCol=='phaseMinutes') ? ' selected="selected"' : '').' value="phaseMinutes">Phase Length</option>
-				<option'.(($sortCol=='minimumReliabilityRating') ? ' selected="selected"' : '').' value="minimumReliabilityRating">Reliability Rating</option>
-				<option'.(($sortCol=='watchedGames') ? ' selected="selected"' : '').' value="watchedGames">Spectator Count</option>
-				<option'.(($sortCol=='turn') ? ' selected="selected"' : '').' value="turn">Game Turn</option>
-				<option'.(($sortCol=='processTime') ? ' selected="selected"' : '').' value="processTime">Time to Next Phase</option>
+			<p>'.l_t('Sort By').': <select  class = "gameCreate" name="sortCol">
+				<option'.(($sortCol=='id') ? ' selected="selected"' : '').' value="id">'.l_t('Game ID').'</option>
+				<option'.(($sortCol=='name') ? ' selected="selected"' : '').' value="name">'.l_t('Game Name').'</option>
+				<option'.(($sortCol=='pot') ? ' selected="selected"' : '').' value="pot">'.l_t('Pot Size').'</option>
+				<option'.(($sortCol=='minimumBet') ? ' selected="selected"' : '').' value="minimumBet">'.l_t('Bet').'</option>
+				<option'.(($sortCol=='phaseMinutes') ? ' selected="selected"' : '').' value="phaseMinutes">'.l_t('Phase Length').'</option>
+				<option'.(($sortCol=='minimumReliabilityRating') ? ' selected="selected"' : '').' value="minimumReliabilityRating">'.l_t('Reliability Rating').'</option>
+				<option'.(($sortCol=='watchedGames') ? ' selected="selected"' : '').' value="watchedGames">'.l_t('Spectator Count').'</option>
+				<option'.(($sortCol=='turn') ? ' selected="selected"' : '').' value="turn">'.l_t('Game Turn').'</option>
+				<option'.(($sortCol=='processTime') ? ' selected="selected"' : '').' value="processTime">'.l_t('Time to Next Phase').'</option>
 			</select></p>
 			<p><select class = "gameCreate" name="sortType">
-				<option'.(($sortType=='asc') ? ' selected="selected"' : '').' value="asc">Ascending</option>
-				<option'.(($sortType=='desc') ? ' selected="selected"' : '').' value="desc">Descending</option>
+				<option'.(($sortType=='asc') ? ' selected="selected"' : '').' value="asc">'.l_t('Ascending').'</option>
+				<option'.(($sortType=='desc') ? ' selected="selected"' : '').' value="desc">'.l_t('Descending').'</option>
 			</select></p></strong>
-			<input type="submit" name="Submit" class="green-Submit" value="Search" /></form></div>
+			<input type="submit" name="Submit" class="green-Submit" value='.l_t('Search').' /></form></div>
 			</br>';
 	$SQL = "SELECT g.*, (SELECT count(1) FROM wD_WatchedGames w WHERE w.gameID = g.id) AS watchedGames FROM wD_Games g";
 	$SQLCounter = "SELECT COUNT(1) FROM wD_Games g";
@@ -1203,21 +1203,21 @@ function printPageBar($pagenum, $maxPage, $sortCol, $sortType, $sortBar = False)
 	{
 		print '<span style="float:right;">
 			<FORM class="advancedSearch" method="get" action="gamelistings.php#results">
-			<b>Sort By:</b>
+			<b>'.l_t('Sort By').':</b>
 			<select  class = "advancedSearch" name="sortCol">
-				<option'.(($sortCol=='id') ? ' selected="selected"' : '').' value="id">Game ID</option>
-				<option'.(($sortCol=='name') ? ' selected="selected"' : '').' value="name">Game Name</option>
-				<option'.(($sortCol=='pot') ? ' selected="selected"' : '').' value="pot">Pot Size</option>
-				<option'.(($sortCol=='minimumBet') ? ' selected="selected"' : '').' value="minimumBet">Bet</option>
-				<option'.(($sortCol=='phaseMinutes') ? ' selected="selected"' : '').' value="phaseMinutes">Phase Length</option>
-				<option'.(($sortCol=='minimumReliabilityRating') ? ' selected="selected"' : '').' value="minimumReliabilityRating">Reliability Rating</option>
-				<option'.(($sortCol=='watchedGames') ? ' selected="selected"' : '').' value="watchedGames">Spectator Count</option>
-				<option'.(($sortCol=='turn') ? ' selected="selected"' : '').' value="turn">Game Turn</option>
-				<option'.(($sortCol=='processTime') ? ' selected="selected"' : '').' value="processTime">Time to Next Phase</option>
+				<option'.(($sortCol=='id') ? ' selected="selected"' : '').' value="id">'.l_t('Game ID').'</option>
+				<option'.(($sortCol=='name') ? ' selected="selected"' : '').' value="name">'.l_t('Game Name').'</option>
+				<option'.(($sortCol=='pot') ? ' selected="selected"' : '').' value="pot">'.l_t('Pot Size').'</option>
+				<option'.(($sortCol=='minimumBet') ? ' selected="selected"' : '').' value="minimumBet">'.l_t('Bet').'</option>
+				<option'.(($sortCol=='phaseMinutes') ? ' selected="selected"' : '').' value="phaseMinutes">'.l_t('Phase Length').'</option>
+				<option'.(($sortCol=='minimumReliabilityRating') ? ' selected="selected"' : '').' value="minimumReliabilityRating">'.l_t('Reliability Rating').'</option>
+				<option'.(($sortCol=='watchedGames') ? ' selected="selected"' : '').' value="watchedGames">'.l_t('Spectator Count').'</option>
+				<option'.(($sortCol=='turn') ? ' selected="selected"' : '').' value="turn">'.l_t('Game Turn').'</option>
+				<option'.(($sortCol=='processTime') ? ' selected="selected"' : '').' value="processTime">'.l_t('Time to Next Phase').'</option>
 			</select>
 			<select class = "advancedSearch" name="sortType">
-				<option'.(($sortType=='asc') ? ' selected="selected"' : '').' value="asc">Ascending</option>
-				<option'.(($sortType=='desc') ? ' selected="selected"' : '').' value="desc">Descending</option>
+				<option'.(($sortType=='asc') ? ' selected="selected"' : '').' value="asc">'.l_t('Ascending').'</option>
+				<option'.(($sortType=='desc') ? ' selected="selected"' : '').' value="desc">'.l_t('Descending').'</option>
 			</select>';
 			foreach($_REQUEST as $key => $value)
 			{
@@ -1227,7 +1227,7 @@ function printPageBar($pagenum, $maxPage, $sortCol, $sortType, $sortBar = False)
 				}
 			}
 			print ' ';
-			print '<input type="submit" class="form-submit" name="Submit" value="Refresh" /></form>
+			print '<input type="submit" class="form-submit" name="Submit" value='.l_t('Refresh').' /></form>
 			</span>';
 		}
 }
