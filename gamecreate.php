@@ -229,7 +229,7 @@ if( isset($_REQUEST['newGame']) and is_array($_REQUEST['newGame']) )
 		if ($User->userIsTempBanned())
 		{
 			processGame::eraseGame($Game->id);
-			libHTML::notice('You are blocked from creating new games.', 'You are blocked from creating new games.');
+			libHTML::notice(l_t('You are blocked from creating new games.'), l_t('You are blocked from creating new games.'));
 		}
 
 		// Create first Member record & object
